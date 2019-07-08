@@ -1,29 +1,63 @@
+var text = {
+  category: '',
+  line_1:'',
+  line_2:'',
+  type: ''
+};
+
 var fonts = [
-  {
-    id: 0,
-    chosen: false,
-    img_src: '...',
-    img_alt: '...',
-    title: 'Tilte 1',
-    text: 'This card has supporting text below as a natural lead-in to additional content.'
-  },
   {
     id: 1,
     chosen: false,
     img_src: '...',
     img_alt: '...',
-    title: 'Tilte 2',
-    text: 'This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.'
+    title: 'Font 1',
+    text: 'This card has supporting text below as a natural lead-in to additional content.'
   },
   {
     id: 2,
     chosen: false,
     img_src: '...',
     img_alt: '...',
-    title: 'Tilte 3',
+    title: 'Font 2',
+    text: 'This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.'
+  },
+  {
+    id: 3,
+    chosen: false,
+    img_src: '...',
+    img_alt: '...',
+    title: 'Font 3',
     text: 'This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.'
   },
-]
+];
+
+var logos = [
+  {
+    id: 1,
+    chosen: false,
+    img_src: '...',
+    img_alt: '...',
+    title: 'Logo 1',
+    text: 'This card has supporting text below as a natural lead-in to additional content.'
+  },
+  {
+    id: 2,
+    chosen: false,
+    img_src: '...',
+    img_alt: '...',
+    title: 'Logo 2',
+    text: 'This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.'
+  },
+  {
+    id: 3,
+    chosen: false,
+    img_src: '...',
+    img_alt: '...',
+    title: 'Logo 3',
+    text: 'This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.'
+  },
+];
 
 Vue.component('card-img', {
   template: ` <img src="" class="card-img-top" alt="">`
@@ -78,9 +112,21 @@ Vue.component('modal-card', {
   `
 })
 
-var modal_items = new Vue({ 
-  el: '#card-items',
+var logo_text_app = new Vue({ 
+  el: '#text-data',
+  data: text
+})
+
+var font_items_app = new Vue({ 
+  el: '#font-items',
   data: {
-    fonts: fonts,
+    fonts: fonts
+  }
+})
+
+var logo_items_app = new Vue({ 
+  el: '#logo-items',
+  data: {
+    logos: logos
   }
 })
