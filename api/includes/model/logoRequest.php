@@ -7,9 +7,7 @@
   
   class LogoRequest extends Model
   {
-      public $logo_text = [];
-      public $font_type = [];
-      public $logo_type = [];
+      //$logo_text = $font_type = $logo_type = [];
       //$textErr = $fontErr = $logoErr = '';
       
       public function read()

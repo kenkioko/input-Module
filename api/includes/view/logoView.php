@@ -8,6 +8,13 @@
   
   class LogoView extends View
   {
+      private $logo_text = [];
+      private $font_type = [];
+      private $logo_type = [];
+      private $textErr = '';
+      private $fontErr = '';
+      private $logoErr = '';
+      
       function __construct()
       {
           $this->model = new LogoRequest;
@@ -24,9 +31,9 @@
         $this->post_form_data();
         
         $this->server_reply([
-          'logo_text' => $GLOBALS['logo_text'],
-          'font_type' => $GLOBALS['font_type'],
-          'logo_type' => $GLOBALS['logo_type'],
+          'logo_text' => $this->logo_text,
+          'font_type' => $this->font_type,
+          'logo_type' => $this->logo_type,
         ], 200);
       }
       
@@ -36,21 +43,22 @@
       private function post_form_data()
       {
         if (empty($_POST["logo_text"])) {
-          $GLOBALS['textErr'] = "logo text is required";
+          $this->textErr = "logo text is required";
         } else {
-          $GLOBALS['logo_text'] = json_decode($_POST["logo_text"], true);
+          $this->logo_text = json_decode($_POST["logo_text"], true);
         }
         
         if (empty($_POST["font_type"])) {
-          $GLOBALS['fontErr'] = "font type is required";
+          $this->fontErr = "font type is required";
         } else {
-          $GLOBALS['font_type'] = json_decode($_POST["font_type"], true);
+          $this->font_type = json_decode($_POST["font_type"], true);
         }
         
         if (empty($_POST["logo_type"])) {
-          $GLOBALS['logoErr'] = "logo type is required";
+          $this->logoErr = "logo type is required";
         } else {
-          $GLOBALS['logo_type'] = json_decode($_POST["logo_type"], true);
+          $this->logo_type = json_decode($_POST["logo_type"], true);
         }
       }
   }
+  

@@ -103,8 +103,6 @@ Vue.component('modal-card', {
       } else if (type == 'logo') {
         selected.logos.push(item.id);
       }
-      
-      console.log(selected);
     },
     remove: function (item, type) {
       this.selected = false;
@@ -120,9 +118,7 @@ Vue.component('modal-card', {
         });
         
         selected.logos.splice(index, 1);
-      }      
-      
-      console.log(selected);
+      }
     },
   },
   template: '#modal-card-template',
