@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.6.6deb5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jul 15, 2019 at 10:14 PM
--- Server version: 5.7.26
+-- Host: localhost:3306
+-- Generation Time: Jul 16, 2019 at 03:20 PM
+-- Server version: 5.7.26-0ubuntu0.19.04.1
 -- PHP Version: 7.2.19-0ubuntu0.19.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -19,16 +17,16 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `fantastic`
+-- Database: `input_modal`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chosen_item`
+-- Table structure for table `chosen_items`
 --
 
-CREATE TABLE `chosen_item` (
+CREATE TABLE `chosen_items` (
   `id` int(11) NOT NULL,
   `request_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL
@@ -37,10 +35,10 @@ CREATE TABLE `chosen_item` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `logo_category`
+-- Table structure for table `logo_categories`
 --
 
-CREATE TABLE `logo_category` (
+CREATE TABLE `logo_categories` (
   `id` int(11) NOT NULL,
   `category` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -70,8 +68,8 @@ CREATE TABLE `logo_requests` (
   `id` int(11) NOT NULL,
   `category` int(11) NOT NULL,
   `line_1` varchar(100) NOT NULL,
-  `line_2` varchar(100) NOT NULL,
-  `type` varchar(100) NOT NULL
+  `line_2` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -79,9 +77,17 @@ CREATE TABLE `logo_requests` (
 --
 
 --
--- Indexes for table `logo_category`
+-- Indexes for table `chosen_items`
 --
-ALTER TABLE `logo_category`
+ALTER TABLE `chosen_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `request_id` (`request_id`),
+  ADD KEY `item_id` (`item_id`);
+
+--
+-- Indexes for table `logo_categories`
+--
+ALTER TABLE `logo_categories`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -94,30 +100,49 @@ ALTER TABLE `logo_items`
 -- Indexes for table `logo_requests`
 --
 ALTER TABLE `logo_requests`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category` (`category`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `logo_category`
+-- AUTO_INCREMENT for table `chosen_items`
 --
-ALTER TABLE `logo_category`
+ALTER TABLE `chosen_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
+--
+-- AUTO_INCREMENT for table `logo_categories`
+--
+ALTER TABLE `logo_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `logo_items`
 --
 ALTER TABLE `logo_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `logo_requests`
 --
 ALTER TABLE `logo_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `chosen_items`
+--
+ALTER TABLE `chosen_items`
+  ADD CONSTRAINT `chosen_items_ibfk_1` FOREIGN KEY (`request_id`) REFERENCES `logo_requests` (`id`),
+  ADD CONSTRAINT `chosen_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `logo_items` (`id`);
+
+--
+-- Constraints for table `logo_requests`
+--
+ALTER TABLE `logo_requests`
+  ADD CONSTRAINT `logo_requests_ibfk_1` FOREIGN KEY (`category`) REFERENCES `logo_categories` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

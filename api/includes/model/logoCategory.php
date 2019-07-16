@@ -13,7 +13,7 @@
       public function read()
       {
         $stmt = $this->db_conn->db_instance()
-            ->prepare('SELECT * FROM logo_category');                    
+            ->prepare('SELECT * FROM logo_categories');                    
         
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_NAMED|PDO::FETCH_CLASS);

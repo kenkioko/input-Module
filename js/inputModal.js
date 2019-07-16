@@ -11,78 +11,19 @@ var logo_text = {
 /*
  * available fonts to be shown on the cards and can be chosen
  */
-var logo_fonts = [
-  {
-    id: 1,
-    img_src: '...',
-    img_alt: '...',
-    title: 'Font 1',
-    text: 'This card has supporting text.'
-  },
-  {
-    id: 2,
-    img_src: '...',
-    img_alt: '...',
-    title: 'Font 2',
-    text: 'This card has supporting text.'
-  },
-  {
-    id: 3,
-    img_src: '...',
-    img_alt: '...',
-    title: 'Font 3',
-    text: 'This card has supporting text.'
-  },
-  {
-    id: 4,
-    img_src: '...',
-    img_alt: '...',
-    title: 'Font 3',
-    text: 'This card has supporting text.'
-  },
-];
-
+var logo_fonts = [];
 
 /*
  * available logos to be shown on the cards and can be chosen
  */
-var logo_types = [
-  {
-    id: 1,
-    img_src: '...',
-    img_alt: '...',
-    title: 'Logo 1',
-    text: 'This card has supporting text .'
-  },
-  {
-    id: 2,
-    img_src: '...',
-    img_alt: '...',
-    title: 'Logo 1',
-    text: 'This card has supporting text .'
-  },
-  {
-    id: 3,
-    img_src: '...',
-    img_alt: '...',
-    title: 'Logo 2',
-    text: 'This card has supporting text.'
-  },
-  {
-    id: 4,
-    img_src: '...',
-    img_alt: '...',
-    title: 'Logo 3',
-    text: 'This card has supporting text.'
-  },
-];
+var logo_types = [];
 
 /*
  * the card top image as a vue component
  */
 Vue.component('card-img', {
   //template: ` <img src="" class="card-img-top <i class="fas fa-image"></i>" alt="">`
-  template: `<i class="fas fa-font fa-7x text-center"></i>`
+  template: `<i class="fas fa-font fa-7x"></i>`
 });
 
 /*
@@ -122,7 +63,7 @@ Vue.component('modal-card', {
     },
   },
   template: '#modal-card-template',
-})
+});
 
 /*
  * vue instances for different modals
@@ -130,7 +71,7 @@ Vue.component('modal-card', {
 var logo_text_app = new Vue({ 
   el: '#text-data',
   data: logo_text
-})
+});
 
 var font_items_app = new Vue({ 
   el: '#font-items',
@@ -138,7 +79,7 @@ var font_items_app = new Vue({
     fonts: logo_fonts,
     type: 'font'
   }
-})
+});
 
 var logo_items_app = new Vue({ 
   el: '#logo-items',
@@ -146,7 +87,7 @@ var logo_items_app = new Vue({
     logos: logo_types,
     type: 'logo'
   }
-})
+});
 
 /*
  * Selected fonts and logo types
@@ -157,6 +98,8 @@ var selected = {
 };
 
 $(function() {
+  var host = 'http://127.0.0.1:8080';
+  
   /*
    * get the form data to be passed to the server
    */
@@ -166,25 +109,85 @@ $(function() {
       font_type: JSON.stringify(selected.fonts),
       logo_type: JSON.stringify(selected.logos),
     }
-  };
+  }
   
   /*
    * submit the form data to the server
    */
   function submit_data() {
     $.ajax({
-      url: "http://127.0.0.1:8000/api/logos.php",
+      url: host + "/api/logos.php",
       data: get_data(),
       dataType: 'json',
       method: 'POST',
-    }).always(function(response, status) {
+    }).done(function(response, status) {
       console.log('response: ', response);
       console.log('status: ', status);
+    }).fail(function (response, status) {
+      fail_response(response, status);
     });
-  };
+  }
   
   $('#submit').click(function () {
     submit_data();
   });
+  
+  function get_categories() {
+    $.ajax({
+      url: host + "/api/categories.php",
+      dataType: 'json',
+      method: 'GET',
+    }).done(function(response, status) {
+      $.each( response, function( index, value ) {
+        set_categories( index, value );
+      });
+    }).fail(function (response, status) {
+      fail_response(response, status);
+    });
+  }
+  
+  function set_categories(index, category) {
+    var select = document.getElementById('category-input');
+    var opt = document.createElement('option');
+    opt.value = category.id;
+    opt.textContent = category.category;            
+    select.appendChild(opt);
+  }
+  
+  get_categories();
+  
+  function get_items() {
+    $.ajax({
+      url: host + "/api/items.php",
+      dataType: 'json',
+      method: 'GET',
+    }).done(function(response, status) {
+      $.each( response, function( index, value ) {
+        if (value.type == 'logo') {
+          set_logos( index, value );
+        } else if (value.type == 'font') {
+          set_fonts( index, value );
+        }
+      });
+    }).fail(function (response, status) {
+      fail_response(response, status);
+    });
+  }
+  
+  function set_logos(index, logo) {
+    logo_types.push(logo);
+  }
+  
+  function set_fonts(index, font) {
+    logo_fonts.push(font);
+  }
+  
+  get_items();
+  
+  function fail_response(response, status) {
+    console.log('response: ', response);
+    console.log('responseJSON: ', response.responseJSON);
+    console.log('status: ', status);
+  }
 });
 

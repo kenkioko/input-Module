@@ -13,7 +13,7 @@
           $this->db_conn = new Connection;
       }
       
-      public function create()
+      public function create($data)
       {
           # code...
       }
@@ -23,7 +23,7 @@
           # code...
       }
       
-      public function update()
+      public function update($data)
       {
           # code...
       }
