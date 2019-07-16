@@ -8,6 +8,10 @@
   
   class LogoView extends View
   {
+      private $logo_text = [];
+      private $font_type = [];
+      private $logo_type = [];
+      
       function __construct()
       {
           $this->model = new LogoRequest;
@@ -22,35 +26,121 @@
       protected function post()
       {
         $this->post_form_data();
+        $this->validate_logo_text($this->logo_text);
+        $this->validate_font_type($this->font_type);
+        $this->validate_logo_type($this->logo_type);
         
+        $create = $this->model->create([
+          'logo_text' => $this->logo_text,
+          'font_type' => $this->font_type,
+          'logo_type' => $this->logo_type,
+        ]);
+
+        $message = 'Request successful';
+        $code = 200;
+        if (!$create) {
+          $message = 'There was an error while making the request';
+          $code = 400;
+        }
+
         $this->server_reply([
-          'logo_text' => $GLOBALS['logo_text'],
-          'font_type' => $GLOBALS['font_type'],
-          'logo_type' => $GLOBALS['logo_type'],
-        ], 200);
+          'message' => $message,
+        ], $code);
       }
-      
+
       /*
        * get the form data from post, submitted as json
        */
       private function post_form_data()
       {
+        $error = false;
+        $error_found = [];
+        
         if (empty($_POST["logo_text"])) {
-          $GLOBALS['textErr'] = "logo text is required";
+          $error = true;
+          array_push($error_found, ['logo_text' => 'logo text is required']);
         } else {
-          $GLOBALS['logo_text'] = json_decode($_POST["logo_text"], true);
+          $this->logo_text = json_decode($_POST["logo_text"], true);
         }
         
         if (empty($_POST["font_type"])) {
-          $GLOBALS['fontErr'] = "font type is required";
+          $error = true;
+          array_push($error_found, ['font_type' => 'font type is required']);
         } else {
-          $GLOBALS['font_type'] = json_decode($_POST["font_type"], true);
+          $this->font_type = json_decode($_POST["font_type"]);
+          
         }
         
         if (empty($_POST["logo_type"])) {
-          $GLOBALS['logoErr'] = "logo type is required";
+          $error = true;
+          array_push($error_found, ['logo_type' => 'logo type is required']);
         } else {
-          $GLOBALS['logo_type'] = json_decode($_POST["logo_type"], true);
+          $this->logo_type = json_decode($_POST["logo_type"]);
+        }
+        
+        if($error) {
+          $this->server_reply([
+            'message' => 'There were errors found',
+            'errors' => $error_found
+          ], 400);
+        }
+      }
+      
+      private function validate_logo_text($data)
+      {
+        $error = false; 
+        $error_found = [];
+       
+        if (empty($data['category'])) {
+          $error = true;
+          array_push($error_found, ['category' => 'category is required']);
+        }
+        
+        if (empty($data['line_1'])) {
+          $error = true;
+          array_push($error_found, ['line_1' => 'line 1 is required']);
+        }
+        
+        if($error) {
+          $this->server_reply([
+            'message' => 'There were errors found',
+            'errors' => [
+              'logo_text' => $error_found
+            ]
+          ], 400);
+        }
+      }
+      
+      private function validate_font_type($data)
+      {
+        $error = false; 
+        $error_found = [];
+        
+        if (empty($data)) {
+          $error = true;
+          $this->server_reply([
+            'message' => 'There were errors found',
+            'errors' => [
+              'font_type' => 'Please choose a font type'
+            ]
+          ], 400);
+        }
+      }
+      
+      private function validate_logo_type($data)
+      {
+        $error = false; 
+        $error_found = [];
+        
+        if (empty($data)) {
+          $error = true;
+          $this->server_reply([
+            'message' => 'There were errors found',
+            'errors' => [
+              'font_type' => 'Please choose a logo type'
+            ]
+          ], 400);
         }
       }
   }
+  
