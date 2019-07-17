@@ -20,10 +20,12 @@ var logo_types = [];
 
 /*
  * the card top image as a vue component
+ *
+ * use one of the two lines
  */
 Vue.component('card-img', {
-  //template: ` <img src="" class="card-img-top <i class="fas fa-image"></i>" alt="">`
-  template: `<i class="fas fa-font fa-7x"></i>`
+  //template: '#card-img-template'  /* uncomment this line for images */
+  template: `<i class="fas fa-image fa-7x"></i>` /* uncomment this line for sample */
 });
 
 /*
@@ -98,7 +100,7 @@ var selected = {
 };
 
 $(function() {
-  var host = 'http://127.0.0.1:8080';
+  var host = 'http://127.0.0.1:8000';
   
   /*
    * get the form data to be passed to the server
@@ -128,7 +130,7 @@ $(function() {
     });
   }
   
-  $('#submit').click(function () {
+  $('#submit-data').click(function () {
     submit_data();
   });
   

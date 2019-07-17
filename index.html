@@ -16,20 +16,24 @@
     
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#textModal">
-      Launch Text modal
+      Enter logo text
     </button>
     
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fontModal">
-      Launch Font modal
+      Choose logo fonts
     </button>
     
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#logoModal">
-      Launch Logo modal
+      Choose logo types
     </button>  
     
-    <button type="button" class="btn btn-primary" id="submit">
+    <button type="button" class="btn btn-primary" id="submit-data">
       Submit Data
-    </button>        
+    </button>
+    
+    <button type="button" class="btn btn-primary" id="get-data">
+      Get Logo Data
+    </button>  
 
     <!-- Text Modal -->
     <div class="modal fade mt-5" id="textModal" tabindex="-1" role="dialog" aria-labelledby="textModalLabel" aria-hidden="true">
@@ -37,7 +41,7 @@
         <div class="modal-content">
           
           <div class="modal-header">
-            <h5 class="modal-title" id="textModalLabel">Enter Text</h5>
+            <h5 class="modal-title" id="textModalLabel">Enter the text you would like in your logo</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</s
               pan>
@@ -84,7 +88,7 @@
         <div class="modal-content">
           
           <div class="modal-header">
-            <h5 class="modal-title" id="fontModalLabel">Choose Font</h5>
+            <h5 class="modal-title" id="fontModalLabel">Choose up to 3 logo fonts.</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</s
               pan>
@@ -117,7 +121,7 @@
         <div class="modal-content">
           
           <div class="modal-header">
-            <h5 class="modal-title" id="logoModalLabel">Choose Logo</h5>
+            <h5 class="modal-title" id="logoModalLabel">Choose up to 3 logo styles.</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</s
               pan>
@@ -144,14 +148,14 @@
       </div>
     </div>
     
-    <!--cards template -->
+    <!--modal card template -->
     <script type="text/x-template" id="modal-card-template">
       <div class="card text-center">
         <div class="card-header">
           <h5 class="card-title">{{item.name}}</h5>
         </div>
         <card-img 
-          v-bind:src="item.img_src"
+          v-bind:src="'img/' + item.img_src.trim()"
           v-bind:alt="item.img_alt"
         ></card-img>
         <div class="card-body">        
@@ -176,6 +180,11 @@
           </button>
         </div>
       </div>
+    </script>
+    
+    <!--card img template -->
+    <script type="text/x-template" id="card-img-template">
+      <img src="" class="card-img-top" alt="">
     </script>
 
     <!-- Optional JavaScript -->

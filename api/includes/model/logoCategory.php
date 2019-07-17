@@ -13,7 +13,7 @@
       public function read()
       {
         $stmt = $this->db_conn->db_instance()
-            ->prepare('SELECT * FROM logo_categories');                    
+            ->prepare('SELECT * FROM logo_categories ORDER BY category ASC');                    
         
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_NAMED|PDO::FETCH_CLASS);
