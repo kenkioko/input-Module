@@ -4,7 +4,7 @@ $(function() {
    */
   var host = 'http://127.0.0.1:8000';
 
-  /*
+  /**
    * logo text to be passed to the server
    */
   var logo_text = {
@@ -14,17 +14,17 @@ $(function() {
     type: ''
   };
 
-  /*
-   * available fonts to be shown on the cards and can be chosen
+  /**
+   * available fonts to be shown on the cards
    */
   var logo_fonts = [];
 
-  /*
-   * available logos to be shown on the cards and can be chosen
+  /**
+   * available logos to be shown on the cards
    */
   var logo_types = [];
 
-  /*
+  /**
    * the card top image as a vue component
    *
    * use one of the two lines
@@ -34,7 +34,7 @@ $(function() {
     //template: `<i class="fas fa-image fa-7x"></i>` /* uncomment this line for sample */
   });
 
-  /*
+  /**
    * the modal card as a vue component
    */
   Vue.component('modal-card', {
@@ -73,7 +73,7 @@ $(function() {
     template: '#modal-card-template',
   });
 
-  /*
+  /**
    * vue instances for different modals
    */
   var logo_text_app = new Vue({ 
@@ -97,7 +97,7 @@ $(function() {
     }
   });
 
-  /*
+  /**
    * Selected fonts and logo types
    */
   var selected = {
@@ -105,7 +105,7 @@ $(function() {
     logos: []
   };  
   
-  /*
+  /**
    * get the form data to be passed to the server
    */
   function get_data() {
@@ -116,7 +116,7 @@ $(function() {
     }
   }
   
-  /*
+  /**
    * submit the form data to the server
    */
   function submit_data() {
@@ -197,6 +197,8 @@ $(function() {
   }
   
   function display_logo_data(index, row) {
+    $('#logo-data-table').empty();
+    
     var tr = document.createElement('tr');
     //id col
     var td_id = document.createElement('td');
@@ -266,11 +268,20 @@ $(function() {
     $('#server-status').text(status + ' [code=' + response.status + ']')
                       .addClass('text-danger')
                       .removeClass('text-success');
-                      
-    $('#server-message').text(response.responseJSON.message);
-    $('#server-data').text(
-      JSON.stringify(response.responseJSON, null, 2)
-    );
+    
+    if(response.responseJSON){
+      $('#server-message').text(response.responseJSON.message);
+      $('#server-data').text(
+        JSON.stringify(response.responseJSON, null, 2)
+      );
+    } else {
+      $('#server-message').text('Server Error!');
+      $('#server-data').text('');
+    }
+  }
+  
+  function reset_data() {
+    //
   }
   
   /**
