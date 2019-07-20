@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 17, 2019 at 08:56 PM
+-- Generation Time: Jul 19, 2019 at 11:52 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.2.19-0ubuntu0.19.04.1
 
@@ -30,8 +30,22 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `chosen_items` (
   `id` int(11) NOT NULL,
-  `request_id` int(11) NOT NULL,
+  `logo_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `logos`
+--
+
+CREATE TABLE `logos` (
+  `id` int(11) NOT NULL,
+  `category` int(11) NOT NULL,
+  `line_1` varchar(100) NOT NULL,
+  `line_2` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -58,12 +72,12 @@ INSERT INTO `logo_categories` (`id`, `category`) VALUES
 (8, 'Business & Consulting'),
 (9, 'Construction & Contracting'),
 (10, 'Family Services & Counseling'),
-(11, 'Finance &amp; Insurance'),
+(11, 'Finance & Insurance'),
 (12, 'Food, Beverage & Restaurant'),
 (13, 'Health Care & Public Safety'),
 (14, 'Holiday & Special Occasions'),
-(15, 'Home Improvement &amp; Cleaning'),
-(16, 'Information Technology &amp; Science'),
+(15, 'Home Improvement & Cleaning'),
+(16, 'Information Technology & Science'),
 (17, 'IT/ Engineering'),
 (18, 'Legal & Politics'),
 (19, 'Marketing & Communications'),
@@ -102,20 +116,6 @@ INSERT INTO `logo_items` (`id`, `name`, `description`, `img_src`, `img_alt`, `ty
 (11, 'Script', 'Elegant handwritten fonts. ', 'font_script.jpg', 'script font', 'font'),
 (12, 'Display', 'Bold fonts with a unique style. ', 'font_display.jpg', 'display font', 'font');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `logo_requests`
---
-
-CREATE TABLE `logo_requests` (
-  `id` int(11) NOT NULL,
-  `category` int(11) NOT NULL,
-  `line_1` varchar(100) NOT NULL,
-  `line_2` varchar(100) DEFAULT NULL,
-  `type` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --
 -- Indexes for dumped tables
 --
@@ -125,8 +125,15 @@ CREATE TABLE `logo_requests` (
 --
 ALTER TABLE `chosen_items`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `request_id` (`request_id`),
+  ADD KEY `request_id` (`logo_id`),
   ADD KEY `item_id` (`item_id`);
+
+--
+-- Indexes for table `logos`
+--
+ALTER TABLE `logos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category` (`category`);
 
 --
 -- Indexes for table `logo_categories`
@@ -141,13 +148,6 @@ ALTER TABLE `logo_items`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `logo_requests`
---
-ALTER TABLE `logo_requests`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `category` (`category`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -155,7 +155,13 @@ ALTER TABLE `logo_requests`
 -- AUTO_INCREMENT for table `chosen_items`
 --
 ALTER TABLE `chosen_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `logos`
+--
+ALTER TABLE `logos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `logo_categories`
@@ -170,12 +176,6 @@ ALTER TABLE `logo_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `logo_requests`
---
-ALTER TABLE `logo_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- Constraints for dumped tables
 --
 
@@ -183,14 +183,14 @@ ALTER TABLE `logo_requests`
 -- Constraints for table `chosen_items`
 --
 ALTER TABLE `chosen_items`
-  ADD CONSTRAINT `chosen_items_ibfk_1` FOREIGN KEY (`request_id`) REFERENCES `logo_requests` (`id`),
+  ADD CONSTRAINT `chosen_items_ibfk_1` FOREIGN KEY (`logo_id`) REFERENCES `logos` (`id`),
   ADD CONSTRAINT `chosen_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `logo_items` (`id`);
 
 --
--- Constraints for table `logo_requests`
+-- Constraints for table `logos`
 --
-ALTER TABLE `logo_requests`
-  ADD CONSTRAINT `logo_requests_ibfk_1` FOREIGN KEY (`category`) REFERENCES `logo_categories` (`id`);
+ALTER TABLE `logos`
+  ADD CONSTRAINT `logos_ibfk_1` FOREIGN KEY (`category`) REFERENCES `logo_categories` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

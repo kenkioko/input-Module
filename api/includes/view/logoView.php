@@ -1,10 +1,10 @@
 <?php namespace Api\Includes\View;
 
   require_once 'view.php';
-  require_once __DIR__ .'/../model/logoRequest.php';
+  require_once __DIR__ .'/../model/logo.php';
   
   use Api\Includes\View\View;
-  use Api\Includes\Model\LogoRequest;
+  use Api\Includes\Model\Logo;
   
   class LogoView extends View
   {
@@ -14,7 +14,7 @@
       
       function __construct()
       {
-          $this->model = new LogoRequest;
+          $this->model = new Logo;
       }
       
       protected function get()
