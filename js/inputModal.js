@@ -8,7 +8,8 @@ $(function() {
    * logo text to be passed to the server
    */
   var logo_text = {
-    category: '',
+    category_text: '',
+    category: '',    
     line_1:'',
     line_2:'',
     type: ''
@@ -49,8 +50,10 @@ $(function() {
         this.selected = true;
         if (type == 'font') {
           selected.fonts.push(item.id);
+          selected_items.fonts.push(item);
         } else if (type == 'logo') {
           selected.logos.push(item.id);
+          selected_items.logos.push(item);
         }
       },
       remove: function (item, type) {
@@ -61,12 +64,24 @@ $(function() {
           });
           
           selected.fonts.splice(index, 1);
+          
+          var index = selected_items.fonts.findIndex(function (element) {
+            return element.id === item.id;
+          });
+          
+          selected_items.fonts.splice(index, 1);
         } else if (type == 'logo') {
           var index = selected.logos.findIndex(function (element) {
             return element === item.id;
           });
           
           selected.logos.splice(index, 1);
+          
+          var index = selected_items.logos.findIndex(function (element) {
+            return element.id === item.id;
+          });
+          
+          selected_items.logos.splice(index, 1);
         }
       },
     },
@@ -98,12 +113,54 @@ $(function() {
   });
 
   /**
+   * display selected fonts and logo types
+   */
+  var selected_items = {
+    fonts: [],
+    logos: []
+  };
+  
+  /**
+   * vue instances to display to data captured
+   */
+  var display_logo_text_app = new Vue({ 
+    el: '#display-text',
+    data: logo_text
+  });
+  
+  var display_logo_font_app = new Vue({ 
+    el: '#display-fonts',
+    data: {
+      fonts: selected_items.fonts
+    }
+  });
+  
+  var display_logo_type_app = new Vue({ 
+    el: '#display-logos',
+    data: {
+      logos: selected_items.logos
+    }
+  });
+  
+  /**
+   * display item component 
+   */
+  Vue.component('display-item', {
+    props: ['item'],
+    template: '#display-item-template'
+  })
+  
+  $('#category-input').change(function () {
+    logo_text.category_text = $( "#category-input option:selected" ).text();
+  });
+  
+  /**
    * Selected fonts and logo types
    */
   var selected = {
     fonts: [],
     logos: []
-  };  
+  }; 
   
   /**
    * get the form data to be passed to the server
@@ -197,6 +254,7 @@ $(function() {
   }
   
   function display_logo_data(index, row) {
+    $('#server-logo-data').removeClass('d-none');
     $('#logo-data-table').empty();
     
     var tr = document.createElement('tr');
@@ -247,12 +305,8 @@ $(function() {
   }
   
   function success_response(response, status) {
-    console.log('response: ', response);
-    console.log('status: ', status);
-    
-    $('#server-status').text(status)
-                      .addClass('text-success')
-                      .removeClass('text-danger');
+    $('#page-alert').addClass('alert-success')
+                    .removeClass('alert-danger d-none');
                       
     $('#server-message').text('Sever responded with success');
     $('#server-data').text(
@@ -261,13 +315,10 @@ $(function() {
   }
   
   function fail_response(response, status) {
-    console.log('response: ', response);
-    console.log('responseJSON: ', response.responseJSON);
-    console.log('status: ', status);
+    $('#page-alert').addClass('alert-danger')
+                    .removeClass('alert-success d-none');
     
     $('#server-status').text(status + ' [code=' + response.status + ']')
-                      .addClass('text-danger')
-                      .removeClass('text-success');
     
     if(response.responseJSON){
       $('#server-message').text(response.responseJSON.message);
@@ -296,6 +347,34 @@ $(function() {
   
   $('#get-data').click(function () {
     get_logo_data();
+  });
+  
+  // Initialize the Auth0 application
+  var webAuth = new auth0.WebAuth({
+    domain:       'dev-k2n.eu.auth0.com',
+    clientID:     '2Nat3h0kOLImHdExf2PUb9yrgC2mau5c'
+  });
+
+  // Parse the URL and extract the Access Token
+  /*webAuth.parseHash(window.location.hash, function(err, authResult) {
+    if (err) {
+      return console.log(err);
+    }
+    webAuth.client.userInfo(authResult.accessToken, function(err, user) {
+        // This method will make a request to the /userinfo endpoint
+        // and return the user object, which contains the user's information,
+        // similar to the response below.
+        console.log(err, user);
+    });
+  });*/
+  
+  $('#auth-login').click(function () {
+    // Trigger login with google
+    webAuth.authorize({
+      connection: 'google-oauth2',
+      responseType: 'token',
+      redirect_uri: 'https://kenkioko.com'
+    }); 
   });
 });
 
