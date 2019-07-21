@@ -238,6 +238,7 @@ $(function() {
       method: 'GET',
     }).done(function(response, status) {
       success_response(response, status)
+      $('#logo-data-table').empty();
       
       $.each( response, function( index, value ) {
         display_logo_data(index, value);
@@ -248,8 +249,7 @@ $(function() {
   }
   
   function display_logo_data(index, row) {
-    $('#server-logo-data').removeClass('d-none');
-    $('#logo-data-table').empty();
+    $('#server-logo-data').removeClass('d-none');    
     
     var tr = document.createElement('tr');
     //id col
