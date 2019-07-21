@@ -49,34 +49,20 @@ $(function() {
       select: function (item, type) {
         this.selected = true;
         if (type == 'font') {
-          selected.fonts.push(item.id);
           selected_items.fonts.push(item);
         } else if (type == 'logo') {
-          selected.logos.push(item.id);
           selected_items.logos.push(item);
         }
       },
       remove: function (item, type) {
         this.selected = false;
         if (type == 'font') {
-          var index = selected.fonts.findIndex(function (element) {
-            return element === item.id;
-          });
-          
-          selected.fonts.splice(index, 1);
-          
           var index = selected_items.fonts.findIndex(function (element) {
             return element.id === item.id;
           });
           
           selected_items.fonts.splice(index, 1);
         } else if (type == 'logo') {
-          var index = selected.logos.findIndex(function (element) {
-            return element === item.id;
-          });
-          
-          selected.logos.splice(index, 1);
-          
           var index = selected_items.logos.findIndex(function (element) {
             return element.id === item.id;
           });
@@ -113,7 +99,7 @@ $(function() {
   });
 
   /**
-   * display selected fonts and logo types
+   * selected fonts and logo types
    */
   var selected_items = {
     fonts: [],
@@ -155,17 +141,22 @@ $(function() {
   });
   
   /**
-   * Selected fonts and logo types
-   */
-  var selected = {
-    fonts: [],
-    logos: []
-  }; 
-  
-  /**
    * get the form data to be passed to the server
    */
   function get_data() {
+    var selected = {
+      fonts: [],
+      logos: []
+    };
+    
+    $.each(selected_items.fonts, function (index, value) {
+      selected.fonts.push(value.id)
+    });
+    
+    $.each(selected_items.logos, function (index, value) {
+      selected.logos.push(value.id)
+    });
+    
     return {
       logo_text: JSON.stringify(logo_text),
       font_type: JSON.stringify(selected.fonts),
@@ -177,6 +168,8 @@ $(function() {
    * submit the form data to the server
    */
   function submit_data() {
+    hide_errors();
+    
     $.ajax({
       url: host + "/api/logos.php",
       data: get_data(),
@@ -186,6 +179,7 @@ $(function() {
       success_response(response, status)
     }).fail(function (response, status) {
       fail_response(response, status);
+      display_errors(response);
     });
   }  
   
@@ -307,7 +301,8 @@ $(function() {
   function success_response(response, status) {
     $('#page-alert').addClass('alert-success')
                     .removeClass('alert-danger d-none');
-                      
+
+    $('#server-status').text('')
     $('#server-message').text('Sever responded with success');
     $('#server-data').text(
       JSON.stringify(response, null, 2)
@@ -331,8 +326,50 @@ $(function() {
     }
   }
   
-  function reset_data() {
-    //
+  /*
+   * display form data errors
+   */
+  function display_errors(response) {
+    if(response.responseJSON.errors){
+      $.each( response.responseJSON.errors, function( key, value ) {
+        console.log(key, value);
+        
+        if(key == 'logo_text'){
+          logo_text_error(value);
+        }
+        
+        if(key == 'font_type'){
+          $('#display-font-error').text(value)
+                                  .removeClass('d-none');
+        }
+        
+        if(key == 'logo_type'){
+          $('#display-logo-error').text(value)
+                                  .removeClass('d-none');
+        }
+      });
+    }
+  }
+  
+  function logo_text_error(logo_text) {
+    $.each( logo_text, function( index, value ) {
+      if(value.category){
+        $('#display-category-error').text(value.category)
+                                    .removeClass('d-none');
+      }
+      
+      if(value.line_1){
+        $('#display-line-error').text(value.line_1)
+                                .removeClass('d-none');
+      }
+    });
+  }
+  
+  function hide_errors() {
+    $('#display-category-error').addClass('d-none');
+    $('#display-line-error').addClass('d-none');
+    $('#display-font-error').addClass('d-none');
+    $('#display-logo-error').addClass('d-none');
   }
   
   /**
@@ -355,25 +392,27 @@ $(function() {
     clientID:     '2Nat3h0kOLImHdExf2PUb9yrgC2mau5c'
   });
 
-  // Parse the URL and extract the Access Token
-  /*webAuth.parseHash(window.location.hash, function(err, authResult) {
-    if (err) {
-      return console.log(err);
-    }
-    webAuth.client.userInfo(authResult.accessToken, function(err, user) {
-        // This method will make a request to the /userinfo endpoint
-        // and return the user object, which contains the user's information,
-        // similar to the response below.
-        console.log(err, user);
+  function get_user_info() {
+    // Parse the URL and extract the Access Token
+    webAuth.parseHash(window.location.hash, function(err, authResult) {
+      if (err) {
+        return console.log(err);
+      }
+      webAuth.client.userInfo(authResult.accessToken, function(err, user) {
+          // This method will make a request to the /userinfo endpoint
+          // and return the user object, which contains the user's information,
+          // similar to the response below.
+          console.log(err, user);
+      });
     });
-  });*/
+  }  
   
   $('#auth-login').click(function () {
     // Trigger login with google
     webAuth.authorize({
       connection: 'google-oauth2',
       responseType: 'token',
-      redirect_uri: 'https://kenkioko.com'
+      redirect_uri: ''
     }); 
   });
 });

@@ -33,20 +33,26 @@
           <div class="card-header">
             <h5 class="card-title">Logo text</h5>
           </div>
-          <div class="card-body">
-            <p class="card-text">
-              Logo Category: <span id="display-category">{{ category_text }}</span>
-            </p>
-            <p class="card-text">
-              Logo Line 1: <span id="display-category">{{ line_1 }}</span>
-            </p>
-            <p class="card-text">
-              Logo Line 2: <span id="display-category">{{ line_2 }}</span>
-            </p>
-            <p class="card-text">
-              Type of Logo: <span id="display-category">{{ type }}</span>
-            </p>                        
-          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <p class="text-danger d-none" id="display-category-error"></p>
+              <p class="font-weight-bold m-0">Business Category:</p>             
+              <p class="m-0">{{ category_text }}</p>
+            </li>
+            <li class="list-group-item">
+              <p class="text-danger d-none" id="display-line-error"></p>
+              <p class="font-weight-bold m-0">Business Name:</p>             
+              <p class="m-0">{{ line_1 }}</p>
+            </li>
+            <li class="list-group-item">
+              <p class="font-weight-bold m-0">Tag Line:</p>             
+              <p class="m-0">{{ line_2 }}</p>
+            </li>
+            <li class="list-group-item">
+              <p class="font-weight-bold m-0">Type of Logo:</p>             
+              <p class="m-0">{{ type }}</p>
+            </li>
+          </ul>
           <div class="card-footer">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#textModal">
               Edit logo text
@@ -58,7 +64,8 @@
           <div class="card-header">
             <h5 class="card-title">Logo Fonts</h5>
           </div>
-          <div class="card-body">            
+          <div class="card-body">  
+            <span class="text-danger d-none" id="display-font-error"></span>          
             <display-item
               v-for="item in fonts"
               v-bind:key="item.id"
@@ -77,6 +84,7 @@
             <h5 class="card-title">Logo Types</h5>
           </div>
           <div class="card-body">
+            <span class="text-danger d-none" id="display-logo-error"></span>
             <display-item
               v-for="item in logos"
               v-bind:key="item.id"
@@ -109,13 +117,13 @@
     
     <div id="server-logo-data" class="container-fluid d-none mx-1 p-2">
       <h5>Logo Data</h5>
-      <table border="1" cellspacing="5" cellpadding="5" class="table shadow">
+      <table class="table table-bordered shadow p-2">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Category</th>
-            <th>Logo Line 1</th>
-            <th>Logo Line 1</th>
+            <th>Business Category</th>
+            <th>Business</th>
+            <th>Logo Line 2</th>
             <th>Type Of Logo Image</th>
             <th>Logo Fonts</th>
             <th>Logo Type</th>
@@ -142,7 +150,7 @@
           <div class="modal-body" id="text-data">
             <form>
               <div class="form-group">
-                <label for="category-input">Logo Category</label>
+                <label for="category-input">Business Category</label>
                 <select 
                   class="custom-select" 
                   id="category-input" 
@@ -152,12 +160,12 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="line1-input">Logo Line 1</label>
-                <input type="text" class="form-control" id="line1-input" placeholder="Logo Line 1" v-model.trim="line_1">
+                <label for="line1-input">Business Name</label>
+                <input type="text" class="form-control" id="line1-input" placeholder="Business Name" v-model.trim="line_1">
               </div>
               <div class="form-group">
-                <label for="line1-input">Logo Line 2</label>
-                <input type="text" class="form-control" id="line2-input" placeholder="Logo Line 2" v-model.trim="line_2">
+                <label for="line1-input">Tag Line</label>
+                <input type="text" class="form-control" id="line2-input" placeholder="Tag Line" v-model.trim="line_2">
                 <small id="emailHelp" class="form-text text-muted">(Optional) Max 30 Characters</small>
               </div>
                <div class="form-group">

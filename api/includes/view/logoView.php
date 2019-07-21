@@ -137,7 +137,7 @@
           $this->server_reply([
             'message' => 'There were errors found',
             'errors' => [
-              'font_type' => 'Please choose a logo type'
+              'logo_type' => 'Please choose a logo type'
             ]
           ], 400);
         }

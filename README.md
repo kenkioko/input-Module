@@ -47,11 +47,25 @@ Import the files in /db/ file.
 
 ### Server
 **For development**
->php dev server may be used
+- php dev server may be used
+```
+php -S host:port
+```
 
 **For production**
->Use Apache server
+- Use Apache server
 
 
 #### Config
+**For Backend Config**
 Edit the /api/.env file 
+
+**For Js Config**
+Edit the js file /api/inputModal.js and change the host var
+```javascript
+  /**
+   * Back-end Server Host URL
+   */
+  var host = 'http://127.0.0.1:8000';
+```
+
