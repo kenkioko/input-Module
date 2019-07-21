@@ -37,6 +37,17 @@
           # code...
       }
       
+      /*
+       * trim whitespaces, strip slashes and convert to html spacial chars
+       */
+      private function cleaned_data($data)
+      {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+      }
+      
       function __destruct() {
           unset($this->db_conn);
       }

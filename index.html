@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/inputModal.css">
     
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 
     <title>Input Modal</title>
   </head>
@@ -52,6 +54,13 @@
               <li class="list-group-item">
                 <p class="font-weight-bold m-0">Type of Logo:</p>             
                 <p class="m-0">{{ type }}</p>
+              </li>
+              <li class="list-group-item">
+                <p class="text-danger d-none" id="display-email-error"></p>
+                <div class="form-group">
+                  <label for="customer-email" class="font-weight-bold">Email address</label>
+                  <input type="email" class="form-control" id="customer-email" placeholder="Enter email">
+                </div>
               </li>
             </ul>
           </div>
@@ -117,22 +126,10 @@
       </div>
     </div>
     
-    <div id="server-logo-data" class="container-fluid d-none mx-1 p-2">
+    <!-- Logo Data Table -->
+    <div id="server-logo-data" class="container-fluid d-none p-3">
       <h5>Logo Data</h5>
-      <table class="table table-bordered shadow p-2">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Business Category</th>
-            <th>Business</th>
-            <th>Logo Line 2</th>
-            <th>Type Of Logo Image</th>
-            <th>Logo Fonts</th>
-            <th>Logo Type</th>
-          </tr>
-        </thead>
-        <tbody id="logo-data-table">
-        </tbody>
+      <table class="cell-border hover stripe w-100 shadow border" id="logo-data-table">
       </table>
     </div>
 
@@ -332,6 +329,8 @@
     <!-- end of font awsome -->
     <!-- Auth0 -->
     <script src="https://cdn.auth0.com/js/auth0/9.10/auth0.min.js"></script>
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
   </body>
 </html>
 

@@ -71,19 +71,21 @@
         try {
           // insert to `logos`
           $sql = "INSERT INTO logos "
-              ."(category, line_1, line_2, type) "
-              ."VALUES (:category, :line_1, :line_2, :type)";
+              ."(category, line_1, line_2, type, email) "
+              ."VALUES (:category, :line_1, :line_2, :type, :email)";
           
           $stmt = $this->db_conn->db_instance()->prepare($sql);
           $stmt->bindParam(':category', $category);
           $stmt->bindParam(':line_1', $line_1);
           $stmt->bindParam(':line_2', $line_2);
           $stmt->bindParam(':type', $type);
+          $stmt->bindParam(':email', $customer_email);
 
           $category = intval($data['logo_text']['category']);
           $line_1 = $data['logo_text']['line_1'];
           $line_2 = $data['logo_text']['line_2'];
           $type = $data['logo_text']['type'];
+          $customer_email = $data['customer_email'];
           if(!$stmt->execute()) {
             $error = true;
           } else {

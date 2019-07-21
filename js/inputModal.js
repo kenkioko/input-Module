@@ -161,6 +161,7 @@ $(function() {
       logo_text: JSON.stringify(logo_text),
       font_type: JSON.stringify(selected.fonts),
       logo_type: JSON.stringify(selected.logos),
+      customer_email: $('#customer-email').val()
     }
   }
   
@@ -176,7 +177,7 @@ $(function() {
       dataType: 'json',
       method: 'POST',
     }).done(function(response, status) {
-      success_response(response, status)
+      success_response(response);
     }).fail(function (response, status) {
       fail_response(response, status);
       display_errors(response);
@@ -232,47 +233,42 @@ $(function() {
   }    
   
   function get_logo_data() {
-    $.ajax({
-      url: host + "/api/logos.php",
-      dataType: 'json',
-      method: 'GET',
-    }).done(function(response, status) {
-      success_response(response, status)
-      $('#logo-data-table').empty();
-      
-      $.each( response, function( index, value ) {
-        display_logo_data(index, value);
-      });
-    }).fail(function (response, status) {
-      fail_response(response, status);
+    $('#server-logo-data').removeClass('d-none');
+    
+    $('#logo-data-table').DataTable({
+      destroy: true,
+      columns:[
+        { data: 'email', title: 'Email'},
+        { data: 'category', title: 'Business Category'},
+        { data: 'line_1', title: 'Business Name'},
+        { data: 'line_2', title: 'Logo Line 2'},
+        { data: 'type', title: 'Type Of Logo Image'},
+        { data: 'logo_font', title: 'Logo Fonts'},
+        { data: 'logo_type', title: 'Logo Type'},
+      ],
+      ajax: {
+        url: host + "/api/logos.php",
+        type: "GET",
+        error: function (response, status) {
+          fail_response(response, status);
+        },
+        dataSrc: function (data) {
+          success_response()
+          
+          $.each( data, function( index, value ) {
+            display_logo_data(index, value) 
+          });
+          
+          return data;
+        },
+      }
     });
   }
   
   function display_logo_data(index, row) {
-    $('#server-logo-data').removeClass('d-none');    
-    
-    var tr = document.createElement('tr');
-    //id col
-    var td_id = document.createElement('td');
-    td_id.textContent = row.id;
-    tr.appendChild(td_id);
-    //category col
-    var td_category = document.createElement('td');
-    td_category.textContent = row.category.category;
-    tr.appendChild(td_category);
-    //line 1 col
-    var td_line_1 = document.createElement('td');
-    td_line_1.textContent = row.line_1;
-    tr.appendChild(td_line_1);
-    //line 2 col
-    var td_line_2 = document.createElement('td');
-    td_line_2.textContent = row.line_2;
-    tr.appendChild(td_line_2);
-    //type col
-    var td_type = document.createElement('td');
-    td_type.textContent = row.type;
-    tr.appendChild(td_type);
-    
+    // category
+    row.category = row.category.category;
+    // font and logo types
     var font = '', logo = '';
     $.each( row.logo_items, function( index, value ) {
       if(value.type == 'font'){
@@ -286,27 +282,23 @@ $(function() {
       }
     });
     
-    //font col
-    var td_font= document.createElement('td');
-    td_font.textContent = font;
-    tr.appendChild(td_font);
-    //logo col
-    var td_logo = document.createElement('td');
-    td_logo.textContent = logo;
-    tr.appendChild(td_logo);
+    row.logo_font = font;
+    row.logo_type = logo;
     
-    document.getElementById('logo-data-table').appendChild(tr);
+    return row;
   }
   
-  function success_response(response, status) {
+  function success_response(response=null) {
     $('#page-alert').addClass('alert-success')
                     .removeClass('alert-danger d-none');
 
     $('#server-status').text('')
-    $('#server-message').text('Sever responded with success');
-    $('#server-data').text(
-      JSON.stringify(response, null, 2)
-    );
+    
+    if(response && response.message){
+      $('#server-message').text(response.message);
+    } else {
+      $('#server-message').text('Sever responded with success');
+    }
   }
   
   function fail_response(response, status) {
@@ -317,12 +309,8 @@ $(function() {
     
     if(response.responseJSON){
       $('#server-message').text(response.responseJSON.message);
-      $('#server-data').text(
-        JSON.stringify(response.responseJSON, null, 2)
-      );
     } else {
       $('#server-message').text('Server Error!');
-      $('#server-data').text('');
     }
   }
   
@@ -332,8 +320,6 @@ $(function() {
   function display_errors(response) {
     if(response.responseJSON.errors){
       $.each( response.responseJSON.errors, function( key, value ) {
-        console.log(key, value);
-        
         if(key == 'logo_text'){
           logo_text_error(value);
         }
@@ -345,6 +331,11 @@ $(function() {
         
         if(key == 'logo_type'){
           $('#display-logo-error').text(value)
+                                  .removeClass('d-none');
+        }
+        
+        if(value.customer_email){
+          $('#display-email-error').text(value.customer_email)
                                   .removeClass('d-none');
         }
       });
@@ -370,6 +361,7 @@ $(function() {
     $('#display-line-error').addClass('d-none');
     $('#display-font-error').addClass('d-none');
     $('#display-logo-error').addClass('d-none');
+    $('#display-email-error').addClass('d-none');
   }
   
   /**

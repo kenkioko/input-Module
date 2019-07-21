@@ -59,16 +59,6 @@
         $this->server_reply([
           'message' => 'Method Not Allowed',
         ], 405);
-      }            
-      
-      /*
-       * trim whitespaces, strip slashes and convert to html spacial chars
-       */
-      private function cleaned_data($data)
-      {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
       }
   }
+  

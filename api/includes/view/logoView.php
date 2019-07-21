@@ -11,6 +11,7 @@
       private $logo_text = [];
       private $font_type = [];
       private $logo_type = [];
+      private $customer_email = '';
       
       function __construct()
       {
@@ -34,6 +35,7 @@
           'logo_text' => $this->logo_text,
           'font_type' => $this->font_type,
           'logo_type' => $this->logo_type,
+          'customer_email' => $this->customer_email
         ]);
 
         $message = 'Request successful';
@@ -76,6 +78,13 @@
           array_push($error_found, ['logo_type' => 'logo type is required']);
         } else {
           $this->logo_type = json_decode($_POST["logo_type"]);
+        }
+        
+        if (empty($_POST["customer_email"])) {
+          $error = true;
+          array_push($error_found, ['customer_email' => 'customer email is required']);
+        } else {
+          $this->customer_email = $_POST["customer_email"];
         }
         
         if($error) {
