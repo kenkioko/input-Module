@@ -1,4 +1,5 @@
 # Ignore everything in this directory
-*
+#*   #uncomment this line
+
 # Except this file
-!.gitignore
+#!.gitignore #uncomment this line
