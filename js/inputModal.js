@@ -378,24 +378,30 @@ $(function() {
     get_logo_data();
   });
   
+  var client_id = 'eLmPtXQDyQXgRqX3DqbnfgOKHPSVg4Gz';
+  
   // Initialize the Auth0 application
   var webAuth = new auth0.WebAuth({
     domain:       'dev-k2n.eu.auth0.com',
-    clientID:     '2Nat3h0kOLImHdExf2PUb9yrgC2mau5c'
+    clientID:     client_id
   });
 
   function get_user_info() {
     // Parse the URL and extract the Access Token
-    webAuth.parseHash(window.location.hash, function(err, authResult) {
-      if (err) {
-        return console.log(err);
+    webAuth.parseHash({ hash: window.location.hash }, function(err, authResult) {
+      if (err || !authResult) {
+        location.hash = '';
+        $('#auth-login').removeClass('d-none');
+        $('#auth-logout').addClass('d-none');
+      } else if (authResult) {
+        webAuth.client.userInfo(authResult.accessToken, function(err, user) {
+          $('#customer-email').val(user.email)
+                             .removeClass('d-none')
+          
+          $('#auth-logout').removeClass('d-none');
+          $('#auth-login').addClass('d-none');
+        });
       }
-      webAuth.client.userInfo(authResult.accessToken, function(err, user) {
-          // This method will make a request to the /userinfo endpoint
-          // and return the user object, which contains the user's information,
-          // similar to the response below.
-          console.log(err, user);
-      });
     });
   }  
   
@@ -404,8 +410,17 @@ $(function() {
     webAuth.authorize({
       connection: 'google-oauth2',
       responseType: 'token',
-      redirect_uri: ''
+      redirect_uri: host
     }); 
   });
+  
+  $('#auth-logout').click(function () {
+    webAuth.logout({
+      returnTo: host,
+      client_id: client_id
+    });
+  });
+  
+  get_user_info();
 });
 

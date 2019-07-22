@@ -17,7 +17,7 @@
   <body>
     
     <div class="container text-center my-3 border shadow">
-      <h1 id="page-header">Request For A Logo</h1>
+      <h1 id="page-header">Request For A Logo Design</h1>
     </div>
     
     <div class="container alert alert-dismissible fade show d-none" role="alert" id="page-alert">
@@ -59,7 +59,15 @@
                 <p class="text-danger d-none" id="display-email-error"></p>
                 <div class="form-group">
                   <label for="customer-email" class="font-weight-bold">Email address</label>
-                  <input type="email" class="form-control" id="customer-email" placeholder="Enter email">
+                  <input type="email" class="form-control d-none" id="customer-email" readonly>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                   <button type="button" class="btn btn-primary btn-sm rounded-0 d-none" id="auth-login">
+                    Auth0 Login
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm rounded-0 d-none" id="auth-logout">
+                    Auth0 Logout
+                  </button> 
                 </div>
               </li>
             </ul>
@@ -119,10 +127,6 @@
         <button type="button" class="btn btn-primary ml-1" id="get-data">
           Get logo data
         </button> 
-        
-        <button type="button" class="btn btn-primary ml-1 d-none" id="auth-login">
-          Auth0 Login
-        </button>         
       </div>
     </div>
     
