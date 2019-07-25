@@ -233,11 +233,14 @@ $(function() {
   }    
   
   function get_logo_data() {
-    $('#server-logo-data').removeClass('d-none');
+    var username = $('#username-input').val().trim();
+    var password = $('#password-input').val().trim();
+    var encodedData = window.btoa(username + ':' + password);
     
     $('#logo-data-table').DataTable({
       destroy: true,
       columns:[
+        { data: 'index', title: '#'},
         { data: 'email', title: 'Email'},
         { data: 'category', title: 'Business Category'},
         { data: 'line_1', title: 'Business Name'},
@@ -249,12 +252,18 @@ $(function() {
       ajax: {
         url: host + "/api/logos.php",
         type: "GET",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
+        },
         error: function (response, status) {
           fail_response(response, status);
         },
         dataSrc: function (data) {
           success_response()
           
+          $('#page-header').text('Logo Data');
+          $('#admin-section').removeClass('d-none');
+          $('#client-section').addClass('d-none');
           $.each( data, function( index, value ) {
             display_logo_data(index, value) 
           });
@@ -270,7 +279,7 @@ $(function() {
     row.category = row.category.category;
     // font and logo types
     var font = '', logo = '';
-    $.each( row.logo_items, function( index, value ) {
+    $.each( row.logo_items, function( indx, value ) {      
       if(value.type == 'font'){
         if(font.trim() !== '') {font += ', '}
         
@@ -282,6 +291,7 @@ $(function() {
       }
     });
     
+    row.index = index + 1;
     row.logo_font = font;
     row.logo_type = logo;
     
@@ -305,7 +315,10 @@ $(function() {
     $('#page-alert').addClass('alert-danger')
                     .removeClass('alert-success d-none');
     
-    $('#server-status').text(status + ' [code=' + response.status + ']')
+    $('#server-status').text(
+      '[status=' + status + ','
+      + ' code=' + response.status + ']'
+    );
     
     if(response.responseJSON){
       $('#server-message').text(response.responseJSON.message);
@@ -374,8 +387,12 @@ $(function() {
     submit_data();
   });
   
-  $('#get-data').click(function () {
+  $('#get-data, #reload-data').click(function () {
     get_logo_data();
+  });
+  
+  $('#admin-logout').click(function () {
+    location.reload(true);
   });
   
   var client_id = 'eLmPtXQDyQXgRqX3DqbnfgOKHPSVg4Gz';

@@ -19,15 +19,17 @@ Has a PHP back-end. Does not use any PHP framework
       |-itemView.php
       |-logoView.php
       |-view.php
+    |-vendor/
+    |-composer.json
+    |-composer.lock
     |-connection.php
     |-reply.php
-   |-vendor/
+    |-.env
+    |-.env.example
+    |-.htaccess
    |-categories.php
-   |-composer.json
-   |-composer.lock
    |-items.php
    |-logos.php
-   |-.env
  |-css/
    |-inputModal.css
  |-db/
@@ -36,8 +38,10 @@ Has a PHP back-end. Does not use any PHP framework
  |-img/
  |-js/
    |-inputModal.js
+ |-.git/
  |-index.html
  |-README.md
+ |-.gitignore
 ```
 
 ### Database
@@ -58,7 +62,7 @@ php -S host:port
 
 #### Config
 **For Backend Config**
-Edit the /api/.env file 
+Edit the /api/includes/.env file 
 
 **For Js Config**
 Edit the js file /api/inputModal.js and change the host var

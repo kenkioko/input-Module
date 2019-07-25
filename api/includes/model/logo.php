@@ -15,7 +15,7 @@
       {        
         $output = [];
         $stmt = $this->db_conn->db_instance()
-            ->prepare('SELECT * FROM logos');                    
+            ->prepare('SELECT * FROM logos ORDER BY id DESC');                    
         
         $stmt->execute();
         while ($row = $stmt->fetch(PDO::FETCH_NAMED)) {

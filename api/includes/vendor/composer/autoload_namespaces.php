@@ -7,5 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
-    'Bramus' => array($vendorDir . '/bramus/router/src'),
 );

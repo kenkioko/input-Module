@@ -28,125 +28,138 @@
       </button>
     </div>
     
-    <div class="container-fluid my-1">
-      <div class="card-group p-3 border shadow">
-        
-        <div class="card" id="display-text">
-          <div class="card-header">
-            <h5 class="card-title">Logo text</h5>
-          </div>
-          <div class="card-body">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <p class="text-danger d-none" id="display-category-error"></p>
-                <p class="font-weight-bold m-0">Business Category:</p>             
-                <p class="m-0">{{ category_text }}</p>
-              </li>
-              <li class="list-group-item">
-                <p class="text-danger d-none" id="display-line-error"></p>
-                <p class="font-weight-bold m-0">Business Name:</p>             
-                <p class="m-0">{{ line_1 }}</p>
-              </li>
-              <li class="list-group-item">
-                <p class="font-weight-bold m-0">Tag Line:</p>             
-                <p class="m-0">{{ line_2 }}</p>
-              </li>
-              <li class="list-group-item">
-                <p class="font-weight-bold m-0">Type of Logo:</p>             
-                <p class="m-0">{{ type }}</p>
-              </li>
-              <li class="list-group-item">
-                <p class="text-danger d-none" id="display-email-error"></p>
-                <div class="form-group">
-                  <label for="customer-email" class="font-weight-bold">Email address</label>
-                  <input type="email" class="form-control d-none" id="customer-email" readonly>
-                </div>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                   <button type="button" class="btn btn-primary btn-sm rounded-0 d-none" id="auth-login">
-                    Auth0 Login
-                  </button>
-                  <button type="button" class="btn btn-secondary btn-sm rounded-0 d-none" id="auth-logout">
-                    Auth0 Logout
-                  </button> 
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#textModal">
-              Edit logo text
-            </button>
-          </div>
-        </div>
-        
-        <div class="card" id="display-fonts">
-          <div class="card-header">
-            <h5 class="card-title">Logo Fonts</h5>
-          </div>
-          <div class="card-body">  
-            <span class="text-danger d-none" id="display-font-error"></span>          
-            <display-item
-              v-for="item in fonts"
-              v-bind:key="item.id"
-              v-bind:item="item"
-            ></display-item>
-          </div>
-          <div class="card-footer">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fontModal">
-              Choose logo fonts
-            </button>
-          </div>
-        </div>
-        
-        <div class="card" id="display-logos">
-          <div class="card-header">
-            <h5 class="card-title">Logo Types</h5>
-          </div>
-          <div class="card-body">
-            <span class="text-danger d-none" id="display-logo-error"></span>
-            <display-item
-              v-for="item in logos"
-              v-bind:key="item.id"
-              v-bind:item="item"
-            ></display-item>
-          </div>
-          <div class="card-footer">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#logoModal">
-              Choose logo types
-            </button>
-          </div>
-        </div>
-        
-      </div>
+    <div class="container-fluid my-1 p-3" >  <!-- Page Container -->
       
-      <div class="d-flex p-2">
-        <button type="button" class="btn btn-primary ml-auto" id="submit-data">
-          Submit data
-        </button>
+      <!-- Client Section -->
+      <section id="client-section">
+        <div class="card-group p-3 border shadow">
+          <div class="card" id="display-text">
+            <div class="card-header">
+              <h5 class="card-title">Logo text</h5>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <p class="text-danger d-none" id="display-category-error"></p>
+                  <p class="font-weight-bold m-0">Business Category:</p>             
+                  <p class="m-0">{{ category_text }}</p>
+                </li>
+                <li class="list-group-item">
+                  <p class="text-danger d-none" id="display-line-error"></p>
+                  <p class="font-weight-bold m-0">Business Name:</p>             
+                  <p class="m-0">{{ line_1 }}</p>
+                </li>
+                <li class="list-group-item">
+                  <p class="font-weight-bold m-0">Tag Line:</p>             
+                  <p class="m-0">{{ line_2 }}</p>
+                </li>
+                <li class="list-group-item">
+                  <p class="font-weight-bold m-0">Type of Logo:</p>             
+                  <p class="m-0">{{ type }}</p>
+                </li>
+                <li class="list-group-item">
+                  <p class="text-danger d-none" id="display-email-error"></p>
+                  <div class="form-group">
+                    <label for="customer-email" class="font-weight-bold">Email address</label>
+                    <input type="email" class="form-control d-none" id="customer-email" readonly>
+                  </div>
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                     <button type="button" class="btn btn-primary btn-sm rounded-0 d-none" id="auth-login">
+                      Login with google
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm rounded-0 d-none" id="auth-logout">
+                      Logout
+                    </button> 
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <button type="button" class="btn btn-primary rounded-0" data-toggle="modal" data-target="#textModal">
+                Edit logo text
+              </button>
+            </div>
+          </div>
+          
+          <div class="card" id="display-fonts">
+            <div class="card-header">
+              <h5 class="card-title">Logo Fonts</h5>
+            </div>
+            <div class="card-body">  
+              <span class="text-danger d-none" id="display-font-error"></span>          
+              <display-item
+                v-for="item in fonts"
+                v-bind:key="item.id"
+                v-bind:item="item"
+              ></display-item>
+            </div>
+            <div class="card-footer">
+              <button type="button" class="btn btn-primary rounded-0" data-toggle="modal" data-target="#fontModal">
+                Choose logo fonts
+              </button>
+            </div>
+          </div>
+          
+          <div class="card" id="display-logos">
+            <div class="card-header">
+              <h5 class="card-title">Logo Types</h5>
+            </div>
+            <div class="card-body">
+              <span class="text-danger d-none" id="display-logo-error"></span>
+              <display-item
+                v-for="item in logos"
+                v-bind:key="item.id"
+                v-bind:item="item"
+              ></display-item>
+            </div>
+            <div class="card-footer">
+              <button type="button" class="btn btn-primary rounded-0" data-toggle="modal" data-target="#logoModal">
+                Choose logo types
+              </button>
+            </div>
+          </div>
+        </div>
         
-        <button type="button" class="btn btn-primary ml-1" id="get-data">
-          Get logo data
-        </button> 
-      </div>
-    </div>
-    
-    <!-- Logo Data Table -->
-    <div id="server-logo-data" class="container-fluid d-none p-3">
-      <h5>Logo Data</h5>
-      <table class="cell-border hover stripe w-100 shadow border" id="logo-data-table">
-      </table>
-    </div>
+        <div class="d-flex p-2">
+          <button type="button" class="btn btn-primary ml-auto rounded-0" id="submit-data">
+            Submit data
+          </button>
+          <button type="button" class="btn btn-primary ml-1 rounded-0" data-toggle="modal" data-target="#credentialsModal">
+            Get logo data
+          </button> 
+        </div>
+      </section>
+      <!-- End Of Client Section -->
+      
+      <!-- Logo Data Table -->
+      <section id="admin-section" class="d-none">
+        <div class="container-fluid p-3">
+          <table class="cell-border hover stripe w-100 shadow border" id="logo-data-table">
+          </table>
+        </div>
+        
+        <div class="d-flex p-2">
+          <button type="button" class="btn btn-primary ml-auto rounded-0" id="reload-data">
+            Reload data
+          </button>
+          <button type="button" class="btn btn-primary ml-1 rounded-0" id="admin-logout">
+            Logout
+          </button> 
+        </div>
+
+      </section>
+      
+    </div>  <!-- End Of Page Container -->
 
     <!-- Text Modal -->
     <div class="modal fade mt-5" id="textModal" tabindex="-1" role="dialog" aria-labelledby="textModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content rounded-0">
           
           <div class="modal-header">
             <h5 class="modal-title" id="textModalLabel">Enter the text you would like in your logo</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</s
-              pan>
+              <span aria-hidden="true">&times;</span>
             </button>
           </div>
          
@@ -169,18 +182,18 @@
               <div class="form-group">
                 <label for="line1-input">Tag Line</label>
                 <input type="text" class="form-control" id="line2-input" placeholder="Tag Line" v-model.trim="line_2">
-                <small id="emailHelp" class="form-text text-muted">(Optional) Max 30 Characters</small>
+                <small id="tagLineHelp" class="form-text text-muted">(Optional) Max 30 Characters</small>
               </div>
                <div class="form-group">
                 <label for="line1-input">Type Of Logo Image</label>
                 <input type="text" class="form-control" id="line2-input" placeholder="Type Of Logo" v-model.trim="type">
-                <small id="emailHelp" class="form-text text-muted">(Optional) Ex. Car, Dog, Bakery, Salon</small>
+                <small id="logoImageHelp" class="form-text text-muted">(Optional) Ex. Car, Dog, Bakery, Salon</small>
               </div>
             </form>
           </div>
           
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            <button type="button" class="btn btn-primary rounded-0" data-dismiss="modal">OK</button>
           </div>
           
         </div>
@@ -190,7 +203,7 @@
     <!-- Font Modal -->
     <div class="modal fade mt-5" id="fontModal" tabindex="-1" role="dialog" aria-labelledby="fontModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content rounded-0">
           
           <div class="modal-header">
             <h5 class="modal-title" id="fontModalLabel">Choose up to 3 logo fonts.</h5>
@@ -207,27 +220,26 @@
                 v-bind:item="item"
                 v-bind:type="type"
               ></modal-card>
-              </div>
+            </div>
           </div>
           
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            <button type="button" class="btn btn-primary rounded-0" data-dismiss="modal">OK</button>
           </div>
           
         </div>
       </div>
     </div>
     
-     <!-- Logo Modal -->
+    <!-- Logo Modal -->
     <div class="modal fade mt-5" id="logoModal" tabindex="-1" role="dialog" aria-labelledby="logoModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content rounded-0">
           
           <div class="modal-header">
             <h5 class="modal-title" id="logoModalLabel">Choose up to 3 logo styles.</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</s
-              pan>
+              <span aria-hidden="true">&times;</span>
             </button>
           </div>
          
@@ -239,11 +251,50 @@
                 v-bind:item="item"
                 v-bind:type="type"
               ></modal-card>
-              </div>
+            </div>
           </div>
           
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            <button type="button" class="btn btn-primary rounded-0" data-dismiss="modal">OK</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- Credentials Modal -->
+    <div class="modal fade mt-5" id="credentialsModal" tabindex="-1" role="dialog" aria-labelledby="credentialsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content rounded-0">
+          
+          <div class="modal-header">
+            <h5 class="modal-title" id="credentialsModalLabel">Login to view page.</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+         
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="username-input">Username</label>
+                <input type="text" class="form-control" id="username-input" placeholder="username">
+              </div>
+              <div class="form-group">
+                <label for="password-input">Password</label>
+                <input type="password" class="form-control" id="password-input" placeholder="password">
+              </div>
+            </form>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary rounded-0" data-dismiss="modal" id="get-data">
+              Login
+            </button>
           </div>
           
         </div>

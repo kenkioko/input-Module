@@ -1,15 +1,12 @@
 <?php namespace Api\Includes;
   
-  require_once __DIR__ . '/../vendor/autoload.php';
+  require_once __DIR__ . '/vendor/autoload.php';
+  require_once __DIR__ . '/dotenv-loader.php';
   require_once 'reply.php';
     
   use PDO;
-  use PDOException;
-  use Dotenv\Dotenv;
+  use PDOException;  
   use Api\Includes\ServerReply;
-  
-  $dotenv = Dotenv::create(__DIR__ . '/../');
-  $dotenv->load();
 
   class Connection
   {
