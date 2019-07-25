@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 19, 2019 at 11:52 PM
+-- Generation Time: Jul 25, 2019 at 12:54 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.2.19-0ubuntu0.19.04.1
 
@@ -34,6 +34,36 @@ CREATE TABLE `chosen_items` (
   `item_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `chosen_items`
+--
+
+INSERT INTO `chosen_items` (`id`, `logo_id`, `item_id`) VALUES
+(34, 11, 10),
+(35, 11, 9),
+(36, 11, 7),
+(37, 12, 10),
+(38, 12, 8),
+(39, 13, 11),
+(40, 13, 5),
+(41, 13, 6),
+(42, 14, 9),
+(43, 14, 11),
+(44, 14, 5),
+(45, 14, 6),
+(46, 15, 9),
+(47, 15, 10),
+(48, 15, 12),
+(49, 15, 11),
+(50, 15, 5),
+(51, 15, 6),
+(52, 15, 7),
+(53, 15, 8),
+(54, 16, 10),
+(55, 16, 11),
+(56, 16, 6),
+(57, 16, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -45,8 +75,21 @@ CREATE TABLE `logos` (
   `category` int(11) NOT NULL,
   `line_1` varchar(100) NOT NULL,
   `line_2` varchar(100) DEFAULT NULL,
-  `type` varchar(100) DEFAULT NULL
+  `type` varchar(100) DEFAULT NULL,
+  `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `logos`
+--
+
+INSERT INTO `logos` (`id`, `category`, `line_1`, `line_2`, `type`, `email`) VALUES
+(11, 14, 'boby', 'one blood', 'car', 'pp@oo.pp'),
+(12, 12, 'food', 'lick', 'plate', 'ex.amp.le'),
+(13, 6, 'apion', 'dope', '', 'lo.as@opion.ko'),
+(14, 5, 'play', 'play hard', '', 'info@play.com'),
+(15, 8, 'bizz', 'nezz', 'biashara', 'kmkioko@gmail.com'),
+(16, 5, 'one', 'i', '', 'kmkioko@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -116,6 +159,26 @@ INSERT INTO `logo_items` (`id`, `name`, `description`, `img_src`, `img_alt`, `ty
 (11, 'Script', 'Elegant handwritten fonts. ', 'font_script.jpg', 'script font', 'font'),
 (12, 'Display', 'Bold fonts with a unique style. ', 'font_display.jpg', 'display font', 'font');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `password` varchar(256) NOT NULL,
+  `verified` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `verified`) VALUES
+(5, 'username', '$2y$10$SUR.L4oHsDGsKULeUeamYek/bBZwGe2oJy/LPhsmnLg093U8TCp9S', 0);
+
 --
 -- Indexes for dumped tables
 --
@@ -148,6 +211,13 @@ ALTER TABLE `logo_items`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -155,13 +225,13 @@ ALTER TABLE `logo_items`
 -- AUTO_INCREMENT for table `chosen_items`
 --
 ALTER TABLE `chosen_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `logos`
 --
 ALTER TABLE `logos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `logo_categories`
@@ -174,6 +244,12 @@ ALTER TABLE `logo_categories`
 --
 ALTER TABLE `logo_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
