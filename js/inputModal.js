@@ -184,6 +184,9 @@ $(function() {
     });
   }  
   
+  /**
+   * categories from the server
+   */
   function get_categories() {
     $.ajax({
       url: host + "/api/categories.php",
@@ -206,6 +209,9 @@ $(function() {
     select.appendChild(opt);
   }
   
+  /**
+   * modal items from the server
+   */
   function get_items() {
     $.ajax({
       url: host + "/api/items.php",
@@ -232,6 +238,9 @@ $(function() {
     logo_fonts.push(font);
   }    
   
+  /**
+   * logo data from the server
+   */
   function get_logo_data() {
     var username = $('#username-input').val().trim();
     var password = $('#password-input').val().trim();
