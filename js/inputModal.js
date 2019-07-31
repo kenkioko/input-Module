@@ -178,9 +178,14 @@ $(function() {
       method: 'POST',
     }).done(function(response, status) {
       success_response(response);
-    }).fail(function (response, status) {
+      $('#submit-data').addClass('d-none');
+      $('#logo-back-btn').removeClass('ml-1').addClass('ml-auto');
+    }).fail(function (response, status, error) {
+      console.log(error);
       fail_response(response, status);
       display_errors(response);
+    }).always(function (response, status) {
+      scroll_top();
     });
   }  
   
@@ -271,8 +276,10 @@ $(function() {
           success_response()
           
           $('#page-header').text('Logo Data');
-          $('#admin-section').removeClass('d-none');
-          $('#client-section').addClass('d-none');
+          $('#admin-section, #page-header-container').removeClass('d-none');
+          $('#client-logo-section').addClass('d-none');
+          $('#page-start-section').removeClass('d-flex')
+                                  .addClass('d-none');
           $.each( data, function( index, value ) {
             display_logo_data(index, value) 
           });
@@ -400,7 +407,7 @@ $(function() {
     get_logo_data();
   });
   
-  $('#admin-logout').click(function () {
+  $('#admin-logout, #logo-back-btn').click(function () {
     location.reload(true);
   });
   
@@ -418,13 +425,14 @@ $(function() {
       if (err || !authResult) {
         location.hash = '';
         $('#auth-login').removeClass('d-none');
-        $('#auth-logout').addClass('d-none');
+        $('#auth-logout, #request-logo-btn, #request-poster-btn').addClass('d-none');
       } else if (authResult) {
         webAuth.client.userInfo(authResult.accessToken, function(err, user) {
           $('#customer-email').val(user.email)
                              .removeClass('d-none')
           
-          $('#auth-logout').removeClass('d-none');
+          $('#auth-logout').text('Not "' + user.email + '" ?');
+          $('#auth-logout, #request-logo-btn, #request-poster-btn').removeClass('d-none');
           $('#auth-login').addClass('d-none');
         });
       }
@@ -448,5 +456,21 @@ $(function() {
   });
   
   get_user_info();
+  
+  $('#request-logo-btn').click(function () {
+    $('#client-logo-section, #page-header-container').removeClass('d-none');
+    $('#page-start-section').addClass('d-none').removeClass('d-flex');
+  });
+  
+  $('#request-poster-btn').click(function () {
+    $('#client-poster-section, #page-header-container').removeClass('d-none');
+    $('#page-start-section').addClass('d-none').removeClass('d-flex');
+    $('#page-header').text('Request For A Poster Design');
+  });
+  
+  function scroll_top() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
 });
 

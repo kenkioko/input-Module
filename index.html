@@ -16,11 +16,13 @@
   </head>
   <body>
     
-    <div class="container text-center my-3 border shadow">
-      <h1 id="page-header">Request For A Logo Design</h1>
+    <!-- Page Header -->
+    <div id="page-header-container" class="container text-center my-3 border shadow d-none">
+      <h1 id="page-header" class="font-weight-bold">Request For A Logo Design</h1>
     </div>
     
-    <div class="container alert alert-dismissible fade show d-none" role="alert" id="page-alert">
+    <!-- Alert Box -->
+    <div class="container alert alert-dismissible fade show d-none mt-2" role="alert" id="page-alert">
       <span id="server-message"></span>
       <span id="server-status"></span>
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -28,14 +30,51 @@
       </button>
     </div>
     
-    <div class="container-fluid my-1 p-3" >  <!-- Page Container -->
+    <div class="container-fluid my-1 p-3">  <!-- Page Container -->
       
-      <!-- Client Section -->
-      <section id="client-section">
+      <!-- Page Start Section -->
+      <section id="page-start-section" class="d-flex row p-5">
+        <div class="col-4 mt-5 mx-auto rounded-0 shadow btn-group-vertical p-5">
+          <h3 class="text-center w-100 border-bottom font-weight-bold">
+            PICK A CHOICE
+          </h3>
+
+          <button type="button" class="btn btn-primary rounded-0 my-2" id="auth-login">
+            Login With Google
+          </button>
+          
+          <button type="button" class="btn btn-secondary rounded-0 my-2 d-none" id="auth-logout">
+            Not You?
+          </button>
+
+          <button type="button" class="btn btn-primary rounded-0 my-2 d-none" id="request-logo-btn">
+            Request A Logo
+          </button>
+          <button type="button" class="btn btn-primary rounded-0 my-2 d-none" id="request-poster-btn">
+            Request A Poster
+          </button>
+          
+          <hr class="border w-100">
+          
+          <button type="button" class="btn btn-primary rounded-0 my-2" data-toggle="modal" data-target="#credentialsModal">
+            Admin Login
+          </button>
+        </div>
+      </section>
+      <!-- End Of Page Start Section -->
+      
+      <!-- Client Poster Section -->
+      <section id="client-poster-section" class="d-none">
+      
+      </section>
+      <!-- End Of Client Poster Section -->
+      
+      <!-- Client Logo Section -->
+      <section id="client-logo-section" class="d-none">
         <div class="card-group p-3 border shadow">
           <div class="card" id="display-text">
             <div class="card-header">
-              <h5 class="card-title">Logo text</h5>
+              <h5 class="card-title font-weight-bold">Logo text</h5>
             </div>
             <div class="card-body">
               <ul class="list-group list-group-flush">
@@ -63,14 +102,6 @@
                     <label for="customer-email" class="font-weight-bold">Email address</label>
                     <input type="email" class="form-control d-none" id="customer-email" readonly>
                   </div>
-                  <div class="btn-group" role="group" aria-label="Basic example">
-                     <button type="button" class="btn btn-primary btn-sm rounded-0 d-none" id="auth-login">
-                      Login with google
-                    </button>
-                    <button type="button" class="btn btn-secondary btn-sm rounded-0 d-none" id="auth-logout">
-                      Logout
-                    </button> 
-                  </div>
                 </li>
               </ul>
             </div>
@@ -83,7 +114,7 @@
           
           <div class="card" id="display-fonts">
             <div class="card-header">
-              <h5 class="card-title">Logo Fonts</h5>
+              <h5 class="card-title font-weight-bold">Logo Fonts</h5>
             </div>
             <div class="card-body">  
               <span class="text-danger d-none" id="display-font-error"></span>          
@@ -102,7 +133,7 @@
           
           <div class="card" id="display-logos">
             <div class="card-header">
-              <h5 class="card-title">Logo Types</h5>
+              <h5 class="card-title font-weight-bold">Logo Types</h5>
             </div>
             <div class="card-body">
               <span class="text-danger d-none" id="display-logo-error"></span>
@@ -124,9 +155,9 @@
           <button type="button" class="btn btn-primary ml-auto rounded-0" id="submit-data">
             Submit data
           </button>
-          <button type="button" class="btn btn-primary ml-1 rounded-0" data-toggle="modal" data-target="#credentialsModal">
-            Get logo data
-          </button> 
+          <button type="button" class="btn btn-primary ml-1 rounded-0" id="logo-back-btn">
+            Back
+          </button>
         </div>
       </section>
       <!-- End Of Client Section -->
