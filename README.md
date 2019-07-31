@@ -7,41 +7,57 @@ Has a PHP back-end. Does not use any PHP framework
 ### Directory
 ```
 -/
+ |-.git/
+ | `-(auto generated files from git)
+ |
  |-api/
-   |-includes/
-    |-model/
-      |-logo.php
-      |-logoCategory.php
-      |-logoItem.php
-      |-model.php
-    |-view/
-      |-categoryView.php
-      |-itemView.php
-      |-logoView.php
-      |-view.php
-    |-vendor/
-    |-composer.json
-    |-composer.lock
-    |-connection.php
-    |-reply.php
-    |-.env
-    |-.env.example
-    |-.htaccess
-   |-categories.php
-   |-items.php
-   |-logos.php
+ | |-includes/
+ | | |-model/
+ | | | |-logo.php
+ | | | |-logoCategory.php
+ | | | |-logoItem.php
+ | | | |-model.php
+ | | | `-user.php
+ | | |
+ | | |-plugins/
+ | | |-vendor/
+ | | | `-(auto generated files from composer)
+ | | |
+ | | |-view/
+ | | | |-adminView.php
+ | | | |-categoryView.php
+ | | | |-itemView.php
+ | | | |-logoView.php
+ | | | `-view.php
+ | | |
+ | | |-.env
+ | | |-.env.example
+ | | |-.gitignore
+ | | |-.htaccess
+ | | |-composer.json
+ | | |-composer.lock
+ | | |-connection.php
+ | | `-reply.php
+ | |
+ | |-admin.php
+ | |-categories.php
+ | |-items.php
+ | |-logos.php
+ |
  |-css/
-   |-inputModal.css
+ |  `-inputModal.css
+ |
  |-db/
-   |-db_data.sql
-   |-db.sql
+ |  |-db_data.sql
+ |  `-db.sql
+ |
  |-img/
  |-js/
-   |-inputModal.js
- |-.git/
+ |  `-inputModal.js
+ |
  |-index.html
- |-README.md
- |-.gitignore
+ `-README.md
+ 
 ```
 
 ### Database
