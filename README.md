@@ -17,6 +17,7 @@ Has a PHP back-end. Does not use any PHP framework
  | | | |-logoCategory.php
  | | | |-logoItem.php
  | | | |-model.php
+ | | | |-poster.php
  | | | `-user.php
  | | |
  | | |-plugins/
@@ -28,6 +29,7 @@ Has a PHP back-end. Does not use any PHP framework
  | | | |-categoryView.php
  | | | |-itemView.php
  | | | |-logoView.php
+ | | | |-posterView.php
  | | | `-view.php
  | | |
  | | |-.env
@@ -43,6 +45,7 @@ Has a PHP back-end. Does not use any PHP framework
  | |-categories.php
  | |-items.php
  | |-logos.php
+ | `-poster.php
  |
  |-css/
  |  `-inputModal.css

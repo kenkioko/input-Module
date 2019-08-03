@@ -1,12 +1,12 @@
 <?php namespace Api\Includes\View;
 
   require_once 'view.php';
-  require_once __DIR__ .'/../model/logo.php';
-  require_once __DIR__ .'/../model/user.php';
+  require_once 'authView.php';
+  require_once __DIR__ .'/../model/logo.php';  
   
   use Api\Includes\View\View;
   use Api\Includes\Model\Logo;
-  use Api\Includes\Model\User;
+  use Api\Includes\View\AuthView;
   
   class LogoView extends View
   {
@@ -23,7 +23,8 @@
       protected function get()
       {   
           //Authenticate
-          $this->authenticate();
+          $auth = new AuthView;
+          $auth->authenticate();
           
           $result = $this->model->read();
           $this->server_reply($result);
@@ -45,7 +46,7 @@
 
         $message = 'Request successful';
         $code = 200;
-        if (!$create) {
+        if (!$create || !isset($create['id'])) {
           $message = 'There was an error while making the request';
           $code = 400;
         }
@@ -154,25 +155,6 @@
               'logo_type' => 'Please choose a logo type'
             ]
           ], 400);
-        }
-      }
-      
-      private function authenticate()
-      {
-        $user = new User;
-        $authenticated = false;
-        $username = $_SERVER['PHP_AUTH_USER'];
-        $password = $_SERVER['PHP_AUTH_PW'];
-        
-        if (isset($username)) {
-          $pass_hash = $user->get($username)['password'];
-          $authenticated = password_verify($password, $pass_hash);
-        }
-        
-        if(!$authenticated){
-          $this->server_reply([
-            'message' => 'You are not unauthorized to view this page!',
-          ], 401);
         }
       }
   }

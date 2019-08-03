@@ -1,16 +1,16 @@
 <?php namespace Api\Includes\View;
 
   require_once 'view.php';
-  require_once __DIR__ .'/../model/logoCategory.php';
+  require_once __DIR__ .'/../model/posterCategory.php';
   
   use Api\Includes\View\View;
-  use Api\Includes\Model\LogoCategory;
+  use Api\Includes\Model\PosterCategory;
   
-  class CategoryView extends View
+  class PosterCategoryView extends View
   {
       function __construct()
       {
-          $this->model = new LogoCategory;
+          $this->model = new PosterCategory;
       }
       
       protected function get()
