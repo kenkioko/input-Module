@@ -1,12 +1,12 @@
 <?php namespace Api\Includes\View;
 
   require_once 'view.php';
+  require_once 'authView.php';
   require_once __DIR__ .'/../model/poster.php';
-  require_once __DIR__ .'/../model/user.php';
   
   use Api\Includes\View\View;
   use Api\Includes\Model\Poster;
-  use Api\Includes\Model\User;
+  use Api\Includes\View\AuthView;
   
   class PosterView extends View
   {
@@ -23,6 +23,7 @@
           $auth = new AuthView;
           $auth->authenticate();
           
+          $this->download_poster_imgs();
           $result = $this->model->read();
           $this->server_reply($result);
       }
@@ -114,6 +115,17 @@
                 ]
               ], 400);
             }
+          }
+      }
+      
+      private function download_poster_imgs()
+      {
+          if(!empty($_GET["filter"]) && !empty($_GET["id"])){
+            $poster_id = $_GET["id"];
+            
+            $this->server_reply([
+              'message' => 'Downloading!',
+            ]);
           }
       }
   }

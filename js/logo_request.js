@@ -6,6 +6,7 @@ import {
   scroll_top,  
   fail_response,
   success_response,
+  set_request_data,
   selected_logo_items,
   set_category_options
 } from './variables.js';
@@ -17,6 +18,11 @@ $(function() {
    */
   var items_fetched = false;
   var categories_fetched = false;
+  
+  /*
+   * logo data table
+   */
+  var logo_table;
   
   /**
    * get the form data to be passed to the server
@@ -124,17 +130,12 @@ $(function() {
     var password = $('#password-input').val().trim();
     var encodedData = window.btoa(username + ':' + password);
     
-    $('#logo-data-table').DataTable({
+    logo_table = $('#logo-data-table').DataTable({
       destroy: true,
       columns:[
         { data: 'index', title: '#'},
-        { data: 'email', title: 'Email'},
+        { data: 'email', title: 'Client Email'},
         { data: 'category', title: 'Business Category'},
-        { data: 'line_1', title: 'Business Name'},
-        { data: 'line_2', title: 'Logo Line 2'},
-        { data: 'type', title: 'Type Of Logo Image'},
-        { data: 'logo_font', title: 'Logo Fonts'},
-        { data: 'logo_type', title: 'Logo Type'},
       ],
       ajax: {
         url: host + "/api/logos.php",
@@ -147,21 +148,27 @@ $(function() {
         },
         dataSrc: function (data) {
           success_response()
-          
-          $('#page-header').text('Logo Data');
-          $('#admin-section, #page-header-container').removeClass('d-none');
-          $('#client-logo-section').addClass('d-none');
-          $('#page-start-section').removeClass('d-flex')
-                                  .addClass('d-none');
+
           $.each( data, function( index, value ) {
             display_logo_data(index, value) 
           });
-          
+
           return data;
         },
       }
     });
   }
+  
+  /**
+   * select table row
+   */
+  $('#logo-data-table tbody').on( 'click', 'tr', function () {
+    logo_table.$('tr.selected').removeClass('selected');
+    $(this).addClass('selected');
+    
+    var logo_data = logo_table.row('.selected').data();
+    set_request_data(logo_data, 'logo');
+  });
   
   function display_logo_data(index, row) {
     // category
@@ -256,8 +263,12 @@ $(function() {
     submit_data();
   });
   
-  $('#get-data, #reload-data').click(function () {
+  $('#get-logo-data').click(function () {
     get_logo_data();
+    
+    $('#page-header').text('Logo Data');
+    $('#logo-data').removeClass('d-none');
+    $('#poster-data, #admin-dash').addClass('d-none');    
   });
   
 });

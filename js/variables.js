@@ -9,8 +9,9 @@ export {
   poster_images,
   fail_response,
   success_response,
+  set_request_data,
   selected_logo_items,
-  set_category_options
+  set_category_options,
 };
 
 /**
@@ -23,7 +24,7 @@ let host = 'http://127.0.0.1:8000';
  */
 let logo_text = {
   category_text: null,
-  category: null,
+  category: '',
   line_1: null,
   line_2: null,
   type: null
@@ -52,7 +53,7 @@ let selected_logo_items = {
  */
 let poster_data = {
   category_text: null,
-  category: null,
+  category: '',
   header: null,
   title: null,
   main: null,
@@ -113,5 +114,39 @@ function set_category_options(index, category, element) {
   opt.value = category.id;
   opt.textContent = category.category;            
   select.appendChild(opt);
+}
+
+function set_request_data(data, data_category) {
+  console.log(data);
+  $('#request-client-email').text(data.email);
+  $('#request-category-text').text(data.category);
+  
+  if(data_category == 'poster'){
+    $('#poster-request').removeClass('d-none');
+    $('#logo-request').addClass('d-none');
+    
+    $('#poster-id').val(data.id);
+    $('#requestModalLabel').text('Poster Request Description');
+    $('#request-category').text('Poster Category:');
+    $('#request-poster-header').text(data.header);
+    $('#request-poster-title').text(data.title);
+    $('#request-poster-main').text(data.main);
+    $('#request-poster-footer').text(data.footer);
+    $('#request-poster-background').text(data.background);
+  } else if(data_category == 'logo'){
+    $('#logo-request').removeClass('d-none');
+    $('#poster-request').addClass('d-none');
+    
+    $('#requestModalLabel').text('Logo Request Details');
+    $('#request-category').text('Business Category:');
+    $('#request-logo-line1').text(data.line_1);
+    $('#request-logo-line2').text(data.line_2);
+    $('#request-logo-type').text(data.type);
+    $('#request-logo-font').text(data.logo_font);
+    $('#request-logo-style').text(data.logo_type);
+  }
+  
+  // show modal
+  $('#requestModal').modal('show');
 }
 

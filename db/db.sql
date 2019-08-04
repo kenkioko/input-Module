@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 25, 2019 at 12:53 PM
--- Server version: 5.7.26
+-- Generation Time: Aug 04, 2019 at 03:49 PM
+-- Server version: 5.7.27
 -- PHP Version: 7.2.19-0ubuntu0.19.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -78,6 +78,47 @@ CREATE TABLE `logo_items` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `posters`
+--
+
+CREATE TABLE `posters` (
+  `id` int(11) NOT NULL,
+  `category` int(11) NOT NULL,
+  `header` varchar(200) DEFAULT NULL,
+  `title` varchar(200) DEFAULT NULL,
+  `main` varchar(200) DEFAULT NULL,
+  `footer` varchar(200) DEFAULT NULL,
+  `background` varchar(200) DEFAULT NULL,
+  `email` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `poster_categories`
+--
+
+CREATE TABLE `poster_categories` (
+  `id` int(11) NOT NULL,
+  `category` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `poster_images`
+--
+
+CREATE TABLE `poster_images` (
+  `id` int(11) NOT NULL,
+  `poster_id` int(11) NOT NULL,
+  `dir` varchar(200) NOT NULL,
+  `files` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -120,6 +161,26 @@ ALTER TABLE `logo_items`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `posters`
+--
+ALTER TABLE `posters`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category` (`category`);
+
+--
+-- Indexes for table `poster_categories`
+--
+ALTER TABLE `poster_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `poster_images`
+--
+ALTER TABLE `poster_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `poster` (`poster_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -155,6 +216,24 @@ ALTER TABLE `logo_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `posters`
+--
+ALTER TABLE `posters`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `poster_categories`
+--
+ALTER TABLE `poster_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `poster_images`
+--
+ALTER TABLE `poster_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -176,6 +255,18 @@ ALTER TABLE `chosen_items`
 --
 ALTER TABLE `logos`
   ADD CONSTRAINT `logos_ibfk_1` FOREIGN KEY (`category`) REFERENCES `logo_categories` (`id`);
+
+--
+-- Constraints for table `posters`
+--
+ALTER TABLE `posters`
+  ADD CONSTRAINT `posters_ibfk_1` FOREIGN KEY (`category`) REFERENCES `poster_categories` (`id`);
+
+--
+-- Constraints for table `poster_images`
+--
+ALTER TABLE `poster_images`
+  ADD CONSTRAINT `poster_images_ibfk_1` FOREIGN KEY (`poster_id`) REFERENCES `posters` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

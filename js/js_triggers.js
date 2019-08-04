@@ -102,7 +102,7 @@ $(function() {
   $('#cred-form').keypress(function (e) {
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode == '13'){
-      $('#get-data').trigger('click');
+      $('#admin-login').trigger('click');
     }
   });
 
