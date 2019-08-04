@@ -3,11 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
-<<<<<<< HEAD
--- Generation Time: Aug 04, 2019 at 04:47 PM
-=======
--- Generation Time: Aug 04, 2019 at 03:50 PM
->>>>>>> master
+-- Generation Time: Aug 04, 2019 at 06:56 PM
 -- Server version: 5.7.27
 -- PHP Version: 7.2.19-0ubuntu0.19.04.1
 
@@ -178,6 +174,13 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `verified`) VALUES
+(5, 'username', '$2y$10$SUR.L4oHsDGsKULeUeamYek/bBZwGe2oJy/LPhsmnLg093U8TCp9S', 0);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -285,7 +288,7 @@ ALTER TABLE `poster_images`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
