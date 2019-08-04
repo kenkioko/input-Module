@@ -25,7 +25,7 @@ $(function() {
           $('#customer-email, #poster-email').val(user.email).removeClass('d-none')
           $('#auth-logout').text('Not "' + user.email + '" ?');
           $('#auth-logout, #request-logo-btn, #request-poster-btn').removeClass('d-none');
-          $('#auth-login').addClass('d-none');
+          $('#auth-login, #admin-login-btn').addClass('d-none');
         });
       }
     });

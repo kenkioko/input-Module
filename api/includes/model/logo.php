@@ -127,7 +127,7 @@
         } catch (Exception $e) {
           $this->db_conn->db_instance()->rollBack();
           
-          $error_msg = 'Error writing to database';
+          $error_msg = 'Error writing to database!';
           if ($_ENV['DEBUG'] == 'true') {
             $error_msg = $e->getMessage();
           } 

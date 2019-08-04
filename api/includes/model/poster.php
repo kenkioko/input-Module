@@ -34,7 +34,7 @@
       
       public function create($data)
       {
-        $r_id = null;
+        $poster_id = null;
         $error = false;
         $this->db_conn->db_instance()->beginTransaction();
         
@@ -53,42 +53,32 @@
           $stmt->bindParam(':background', $background);
           $stmt->bindParam(':email', $email);
 
-          $category = intval($data['category']);
-          $header = $data['header'];
-          $title = $data['title'];
-          $main = $data['main'];
-          $footer = $data['footer'];
-          $background = $data['background'];
-          $email = $data['email'];
+          $category = intval($data['content']['category']);
+          $header = $data['content']['header'];
+          $title = $data['content']['title'];
+          $main = $data['content']['main'];
+          $footer = $data['content']['footer'];
+          $background = $data['content']['background'];
+          $email = $data['content']['email'];
           if(!$stmt->execute()) {
             $error = true;
           } else {
-            $r_id = $this->db_conn->db_instance()->lastInsertId();
+            $poster_id = $this->db_conn->db_instance()->lastInsertId();
           }
           
-          /*// insert to chosen_item
-          $sql = "INSERT INTO chosen_items "
-              ."(logo_id, item_id) "
-              ."VALUES (:logo_id, :item_id)";
-          
-          $stmt = $this->db_conn->db_instance()->prepare($sql);
-          $stmt->bindParam(':logo_id', $logo_id);
-          $stmt->bindParam(':item_id', $item_id);
-          
-          // font_type
-          foreach ($data['font_type'] as $key => $value) {
-            $logo_id = intval($r_id);
-            $item_id = intval($value);
+          // save images
+          if(!empty($_FILES['images'])) {
+            $dir = $data['content']['email'] .date('_Y-m-d_H:i:s');
+            $files = $this->save_files($data['images'], $dir);
             
-            if(!$stmt->execute()) {
-              $error = true;
-            }
-          }
-
-          // logo_type
-          foreach ($data['logo_type'] as $key => $value) {
-            $logo_id = intval($r_id);
-            $item_id = intval($value);
+            $sql = "INSERT INTO poster_images "
+                ."(poster_id, dir, files) "
+                ."VALUES (:poster_id, :dir, :files)";
+            
+            $stmt = $this->db_conn->db_instance()->prepare($sql);
+            $stmt->bindParam(':poster_id', $poster_id);
+            $stmt->bindParam(':dir', $dir);
+            $stmt->bindParam(':files', json_encode($files));
             if(!$stmt->execute()) {
               $error = true;
             }
@@ -97,11 +87,11 @@
           if($error){
             $this->db_conn->db_instance()->rollBack();
             return null;
-          } */    
+          }
         } catch (Exception $e) {
           $this->db_conn->db_instance()->rollBack();
           
-          $error_msg = 'Error writing to database';
+          $error_msg = 'Error writing to database!';
           if ($_ENV['DEBUG'] == 'true') {
             $error_msg = $e->getMessage();
           } 
@@ -112,7 +102,26 @@
         }
         
         $this->db_conn->db_instance()->commit();
-        return ['id' => $r_id];
+        return ['id' => $poster_id];
+      }
+      
+      private function save_files($files, $dir)
+      {
+          $storage = __DIR__ .'/../storage';
+          $dir = $storage .'/' .$dir;
+          mkdir($dir, 0755);
+          $uploaded = [];
+          
+          foreach ($files as $index => $file) {
+            move_uploaded_file(
+              $file['tmp_name'],
+              $dir .'/' .$file['name']
+            );
+            
+            array_push($uploaded, $file['name']);
+          }
+          
+          return $uploaded;
       }
   }
   

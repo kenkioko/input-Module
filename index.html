@@ -43,7 +43,7 @@
             PICK A CHOICE
           </h3>
 
-          <button type="button" class="btn btn-primary rounded-0 my-2" id="auth-login">
+          <button type="button" class="btn btn-success rounded-0 my-2" id="auth-login">
             Login With Google
           </button>
           
@@ -51,16 +51,16 @@
             Not You?
           </button>
 
-          <button type="button" class="btn btn-primary rounded-0 my-2 d-none" id="request-logo-btn">
+          <button type="button" class="btn btn-success rounded-0 my-2 d-none" id="request-logo-btn">
             Request A Logo
           </button>
-          <button type="button" class="btn btn-primary rounded-0 my-2 d-none" id="request-poster-btn">
+          <button type="button" class="btn btn-success rounded-0 my-2 d-none" id="request-poster-btn">
             Request A Poster
           </button>
           
           <hr class="border w-100">
           
-          <button type="button" class="btn btn-primary rounded-0 my-2" data-toggle="modal" data-target="#credentialsModal">
+          <button type="button" class="btn btn-dark rounded-0 my-2" id="admin-login-btn" data-toggle="modal" data-target="#credentialsModal">
             Admin Login
           </button>
         </div>
@@ -122,15 +122,22 @@
               <h5 class="card-title font-weight-bold">Poster Images</h5>
             </div>
             <div class="card-body">
-              //
+              <p class="text-danger d-none" id="poster-images-error"></p>
+              <div class="card-columns">                
+                <display-pimage
+                  v-for="(image, index) in images"
+                  v-bind:key="index"
+                  v-bind:image="image"
+                ></display-pimage>
+              </div>
             </div>
           </div>
         </div>
         <div class="d-flex p-2">
-          <button type="button" class="btn btn-primary ml-auto rounded-0" id="submit-poster-data">
+          <button type="button" class="btn btn-success ml-auto rounded-0" id="submit-poster-data">
             Submit data
           </button>
-          <button type="button" class="btn btn-primary ml-1 rounded-0" id="poster-back-btn">
+          <button type="button" class="btn btn-secondary ml-1 rounded-0" id="poster-back-btn">
             Back
           </button>
         </div>
@@ -186,11 +193,11 @@
             </div>
             <div class="card-body">  
               <span class="text-danger d-none" id="display-font-error"></span>          
-              <display-item
+              <display-litem
                 v-for="item in fonts"
                 v-bind:key="item.id"
                 v-bind:item="item"
-              ></display-item>
+              ></display-litem>
             </div>
             <div class="card-footer">
               <button type="button" class="btn btn-primary rounded-0" data-toggle="modal" data-target="#fontModal">
@@ -205,11 +212,11 @@
             </div>
             <div class="card-body">
               <span class="text-danger d-none" id="display-logo-error"></span>
-              <display-item
+              <display-litem
                 v-for="item in logos"
                 v-bind:key="item.id"
                 v-bind:item="item"
-              ></display-item>
+              ></display-litem>
             </div>
             <div class="card-footer">
               <button type="button" class="btn btn-primary rounded-0" data-toggle="modal" data-target="#logoModal">
@@ -220,33 +227,39 @@
         </div>
         
         <div class="d-flex p-2">
-          <button type="button" class="btn btn-primary ml-auto rounded-0" id="submit-logo-data">
+          <button type="button" class="btn btn-success ml-auto rounded-0" id="submit-logo-data">
             Submit data
           </button>
-          <button type="button" class="btn btn-primary ml-1 rounded-0" id="logo-back-btn">
+          <button type="button" class="btn btn-secondary ml-1 rounded-0" id="logo-back-btn">
             Back
           </button>
         </div>
       </section>
       <!-- End Of Client Section -->
       
-      <!-- Logo Data Table -->
+      <!-- Admin Section -->
       <section id="admin-section" class="d-none">
-        <div class="container-fluid p-3">
-          <table class="cell-border hover stripe w-100 shadow border" id="logo-data-table">
-          </table>
+        <div class="row">
+          <div class="col-3 px-3">
+            <div class="card rounded-0 shadow">
+              <div class="card-header bg-dark text-white text-left">
+                Admin Menu
+              </div>
+              <ul class="list-group list-group-flush">
+                <button class="list-group-item text-left" id="reload-data">Logo Data</button>
+                <button class="list-group-item text-left" id="poster-data">Poster Data</button>
+                <button class="list-group-item text-left" id="admin-logout">Logout</button>
+              </ul>
+            </div>
+          </div>
+          <!-- Logo Data Table -->
+          <div class="col p-3 shadow border">
+            <table class="cell-border hover stripe w-100" id="logo-data-table">
+            </table>
+          </div>
         </div>
-        
-        <div class="d-flex p-2">
-          <button type="button" class="btn btn-primary ml-auto rounded-0" id="reload-data">
-            Reload data
-          </button>
-          <button type="button" class="btn btn-primary ml-1 rounded-0" id="admin-logout">
-            Logout
-          </button> 
-        </div>
-
       </section>
+      <!-- End Of Admin Section -->
       
     </div>  <!-- End Of Page Container -->
 
@@ -291,7 +304,8 @@
           </div>
           
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary rounded-0" data-dismiss="modal">OK</button>
+            <button type="button" class="btn btn-primary rounded-0 d-none" data-dismiss="modal" id="logo-text-ok">OK</button>
+            <button type="button" class="btn btn-success rounded-0" data-dismiss="modal" id="logo-next-font">Choose Logo Fonts</button>
           </div>
           
         </div>
@@ -322,7 +336,8 @@
           </div>
           
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary rounded-0" data-dismiss="modal">OK</button>
+            <button type="button" class="btn btn-primary rounded-0 d-none" data-dismiss="modal" id="logo-font-ok">OK</button>
+            <button type="button" class="btn btn-success rounded-0" data-dismiss="modal" id="logo-next-type">Choose Logo Types</button>
           </div>
           
         </div>
@@ -353,7 +368,8 @@
           </div>
           
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary rounded-0" data-dismiss="modal">OK</button>
+            <button type="button" class="btn btn-primary rounded-0 d-none" data-dismiss="modal" id="logo-type-ok">OK</button>
+            <button type="button" class="btn btn-success rounded-0" data-dismiss="modal" id="logo-finish">Finish</button>
           </div>
           
         </div>
@@ -374,7 +390,7 @@
           </div>
          
           <div class="modal-body">
-            <form class="p-2">
+            <form class="p-2" id="cred-form">
               <div class="form-group">
                 <label for="username-input">Username</label>
                 <input type="text" class="form-control" id="username-input" placeholder="username">
@@ -390,7 +406,7 @@
             <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal">
               Cancel
             </button>
-            <button type="button" class="btn btn-primary rounded-0" data-dismiss="modal" id="get-data">
+            <button type="button" class="btn btn-success rounded-0" data-dismiss="modal" id="get-data">
               Login
             </button>
           </div>
@@ -487,11 +503,18 @@
               </div>
               
               <hr class="w-100">
-              <p><small class="text-muted">Upload images to be included in the poster.</small></p>              
+              <p>
+                <small class="text-muted">Upload images to be included in the poster.</small>
+                <small class="text-muted">
+                  To select multiple files, 
+                  put them in one folder and select one by one (Ctrl + right click) 
+                  or select all (Ctrl + A)
+                </small>
+              </p>
               
               <div class="custom-file">
                 <input type="file" accept="image/*" class="custom-file-input" id="poster-images-input" multiple>
-                <label class="custom-file-label" for="poster-images-input">Choose Images</label>
+                <label class="custom-file-label" for="poster-images-input" id="poster-images-label">Choose Images</label>
               </div>
             </form>
           </div>
@@ -544,7 +567,7 @@
     </script>
     
     <!--display item template -->
-    <script type="text/x-template" id="display-item-template">
+    <script type="text/x-template" id="display-litem-template">
       <div class="row border-bottom">
         <div class="col-3 p-1">
           <card-img 
@@ -558,6 +581,16 @@
             {{ item.description }}
           </p>
         </div>
+      </div>
+    </script>
+    
+     <!--display poster image template -->
+    <script type="text/x-template" id="display-pimage-template">
+      <div class="card">
+        <card-img 
+          v-bind:src="image"
+          v-bind:alt="key"
+        ></card-img>
       </div>
     </script>
 

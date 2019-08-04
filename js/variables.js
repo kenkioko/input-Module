@@ -1,10 +1,12 @@
 export { 
-  host,  
+  host,
   logo_text,
   logo_fonts,
   logo_types,
+  first_time,
   scroll_top,
   poster_data,
+  poster_images,
   fail_response,
   success_response,
   selected_logo_items,
@@ -57,6 +59,17 @@ let poster_data = {
   footer: null,
   background: null,
   email: null
+};
+
+let poster_images = [];
+
+/**
+ * first time run after loading
+ */
+let first_time = {
+  logo_text: true,
+  logo_font: true,
+  logo_type: true
 };
 
 function scroll_top() {

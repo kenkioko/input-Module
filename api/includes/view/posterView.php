@@ -30,13 +30,22 @@
       protected function post()
       {
           $this->validate_post_data();
+          $file_ary = [];
           
-          $create = $this->model->create($_POST);
+          if(!empty($_FILES['images'])) {
+            $file_ary = $this->re_arrange($_FILES['images']);
+            $this->validate_images($file_ary);
+          }
 
-          $message = 'Request successful';
-          $code = 200;
+          $create = $this->model->create([
+            'content' => $_POST,
+            'images' => $file_ary
+          ]);
+
+          $message = 'Request successful!';
+          $code = 201;
           if (!$create || !isset($create['id'])) {
-            $message = 'There was an error while making the request';
+            $message = 'There was an error while making the request!';
             $code = 400;
           }
 
@@ -53,22 +62,58 @@
           if (empty($_POST["category"])) {
             $error = true;
             array_push($error_found, [
-              'category' => 'poster category is required'
+              'category' => 'poster category is required!'
             ]);
           }
           
           if (empty($_POST["email"])) {
             $error = true;
             array_push($error_found, [
-              'email' => 'customer email is required'
+              'email' => 'customer email is required!'
             ]);
           }
           
           if($error){
             $this->server_reply([
-              'message' => 'There were errors found',
+              'message' => 'There were errors found!',
               'errors' => $error_found
             ], 400);
+          }
+      }
+      
+      private function re_arrange($file_post){
+          foreach( $file_post as $key => $all_files ){
+            foreach( $all_files as $index => $value ){
+              $new[$index][$key] = $value;   
+            }   
+          }
+          return $new;
+      }
+      
+      private function validate_images($images)
+      {
+          $image_ext = array(
+            'jpg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif'
+          );
+          
+          foreach ($images as $index => $file) {
+            $is_image = false;
+            foreach ($image_ext as $key => $value) {
+              if ($file['type'] == $value) {
+                $is_image = true;
+              }
+            }
+
+            if (!$is_image) {
+              $this->server_reply([
+                'message' => 'There were errors found!',
+                'errors' => [
+                  'images' => 'file "' .$file['name'] .'" is not an image!'
+                ]
+              ], 400);
+            }
           }
       }
   }

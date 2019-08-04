@@ -2,6 +2,7 @@ import {
   host,
   scroll_top,
   poster_data,
+  poster_images,
   fail_response,
   success_response,
   set_category_options
@@ -43,32 +44,66 @@ $(function() {
   });
   
   /**
+   * get the form data to be submited to the server
+   */
+  function get_form_data() {
+    poster_data.email = $('#poster-email').val();
+    var formData = new FormData();
+
+    $.each(poster_data, function (key, value) {
+      if(poster_data[key]){
+        formData.append(key, value);
+      }
+    });
+    
+    var img_files = document.getElementById('poster-images-input');
+    $.each( img_files.files, function( index, file ) {
+      formData.append('images[]', file, file.name);
+    });
+
+    return formData;
+  }
+  
+  /**
    * submit the form data to the server
    */
   function submit_data() {
     hide_errors();
-    poster_data.email = $('#poster-email').val();
     
-    $.ajax({
-      url: host + "/api/posters.php",
-      data: poster_data,
-      dataType: 'json',
-      method: 'POST',
-    }).done(function(response) {
-      success_response(response);
-      $('#submit-poster-data').addClass('d-none');
-      $('#poster-back-btn').removeClass('ml-1').addClass('ml-auto');
-    }).fail(function (response, status, error) {      
-      fail_response(response, status, error);
-      display_errors(response);
-    }).always(function () {
+    var request = new XMLHttpRequest();
+    request.onload = function () {      
+      try{
+        var response = JSON.parse(request.response);
+
+        if(request.status == 200 || request.status == 201){
+          success_response(response);
+          $('#submit-poster-data').addClass('d-none');
+          $('#poster-back-btn').removeClass('ml-1').addClass('ml-auto');
+        } else {
+          fail_response({
+            responseJSON: response,
+            status: request.status,
+          }, 'error', request.statusText);
+
+          display_errors(response);
+        }
+      } catch {
+        fail_response({
+          status: request.status,
+        }, 'error', request.statusText);
+      }
+
       scroll_top();
-    });
+    };
+    
+    
+    request.open("POST", host + "/api/posters.php");
+    request.send(get_form_data());
   }
-  
+
   function display_errors(response) {
-    if(response.responseJSON.errors){
-      $.each( response.responseJSON.errors, function( key, value ) {
+    if(response && response.errors){
+      $.each( response.errors, function( key, value ) {
         if(value.category){
           $('#poster-category-error')
             .text(value.category)
@@ -78,6 +113,13 @@ $(function() {
         if(value.email){
           $('#poster-email-error')
             .text(value.email)
+            .removeClass('d-none');
+        }
+        
+        console.log(key, value)
+        if(key == 'images'){
+          $('#poster-images-error')
+            .text(value)
             .removeClass('d-none');
         }
       });
@@ -135,35 +177,25 @@ $(function() {
     });*/
   }
   
+  function readURL(files) {
+    poster_images.splice(0, poster_images.length);
+
+    $.each( files, function( index, file ) {
+      var url = window.URL.createObjectURL(file);
+      poster_images.push(url);
+    });
+  }
+  
   $('#submit-poster-data').click(function () {
     submit_data();
   });
-});
-
-/* js
-
-function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
+  
+  $('#poster-images-input').change(function () {
+    $('#poster-images-label').text(
+     this.files.length + ' file(s) selected.'
+    );
     
-    reader.onload = function(e) {
-      $('#blah').attr('src', e.target.result);
-    }
-    
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-$("#imgInp").change(function() {
-  readURL(this);
+    readURL(this.files);
+  });
 });
-
-*/
-
-/* html
-
-<input type='file' id="imgInp" />
-<img scr="">
-*/
-
 

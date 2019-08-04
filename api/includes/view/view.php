@@ -57,7 +57,7 @@
       private function method_not_allowed()
       {
         $this->server_reply([
-          'message' => 'Method Not Allowed',
+          'message' => 'Method Not Allowed!',
         ], 405);
       }
   }

@@ -4,6 +4,7 @@ import {
   logo_fonts,
   logo_types,
   poster_data,
+  poster_images,
   selected_logo_items
 } from './variables.js';
 
@@ -19,18 +20,26 @@ $(function() {
   });
   
   /**
-   * display item component 
+   * display logo item component 
    */
-  Vue.component('display-item', {
-    props: ['item'],
-    template: '#display-item-template'
+  Vue.component('display-litem', {
+    props: ['key', 'item'],
+    template: '#display-litem-template'
+  })
+  
+  /**
+   * display poster image component 
+   */
+  Vue.component('display-pimage', {
+    props: ['key', 'image'],
+    template: '#display-pimage-template'
   })
 
   /**
    * the modal card as a vue component
    */
   Vue.component('modal-card', {
-    props: ['item', 'type'],
+    props: ['key', 'item', 'type'],
     data: function () {
       return {
         selected: false
@@ -122,6 +131,13 @@ $(function() {
   var display_poster_app = new Vue({ 
     el: '#poster-data-display',
     data: poster_data
+  });
+  
+  var display_pimages_app = new Vue({ 
+    el: '#poster-image-display',
+    data: {
+      images: poster_images
+    }
   });
 });
 

@@ -7,8 +7,6 @@
   
   class User extends Model
   {
-      
-      
       public function get($user)
       {        
         $sql = 'SELECT * FROM users WHERE username = :user';
@@ -34,8 +32,14 @@
           
           $stmt->execute();
         } catch (Exception $e) {
-          echo 'Caught exception: ',  $e->getMessage(), "\n";
-          exit();
+          $error_msg = 'Error writing to database!';
+          if ($_ENV['DEBUG'] == 'true') {
+            $error_msg = $e->getMessage();
+          } 
+          
+          $this->server_reply([
+            'message' => $error_msg,
+          ], 500);
         }
         
         return true;
