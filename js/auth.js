@@ -1,4 +1,8 @@
-import { host } from './variables.js';
+import {
+  host,
+  fail_response,
+  success_response,
+} from './variables.js';
 
 $(function() {
   /**
@@ -48,6 +52,32 @@ $(function() {
   });    
   
   get_user_info();
+  
+  /**
+   * login to admin dashboard
+   */
+  $('#admin-login').click(function () {
+    var username = $('#username-input').val().trim();
+    var password = $('#password-input').val().trim();
+    var encodedData = window.btoa(username + ':' + password);
+    
+    $.ajax({
+      url: host + "/api/admin.php",
+      dataType: 'json',
+      method: 'GET',
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
+      },
+    }).done(function(response, status) {
+      success_response(response);
+      
+      $('#admin-section, #page-header-container').removeClass('d-none');
+      $('#page-start-section').removeClass('d-flex').addClass('d-none');
+      $('#client-logo-section').addClass('d-none');
+    }).fail(function (response, status, error) {
+      fail_response(response, status, error);
+    });
+  });
   
 });
 

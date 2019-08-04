@@ -5,6 +5,7 @@ import {
   poster_images,
   fail_response,
   success_response,
+  set_request_data,
   set_category_options
 } from './variables.js';
 
@@ -14,6 +15,11 @@ $(function() {
    * have been fetched from the server
    */
   var categories_fetched = false;
+  
+  /*
+   * poster data table
+   */
+  var poster_table;
   
   /**
    * categories from the server
@@ -96,7 +102,6 @@ $(function() {
       scroll_top();
     };
     
-    
     request.open("POST", host + "/api/posters.php");
     request.send(get_form_data());
   }
@@ -138,20 +143,15 @@ $(function() {
     var password = $('#password-input').val().trim();
     var encodedData = window.btoa(username + ':' + password);
     
-    /*$('#logo-data-table').DataTable({
+    poster_table = $('#poster-data-table').DataTable({
       destroy: true,
       columns:[
         { data: 'index', title: '#'},
-        { data: 'email', title: 'Email'},
-        { data: 'category', title: 'Business Category'},
-        { data: 'line_1', title: 'Business Name'},
-        { data: 'line_2', title: 'Logo Line 2'},
-        { data: 'type', title: 'Type Of Logo Image'},
-        { data: 'logo_font', title: 'Logo Fonts'},
-        { data: 'logo_type', title: 'Logo Type'},
+        { data: 'email', title: 'Client Email'},
+        { data: 'category', title: 'Poster Category'},
       ],
       ajax: {
-        url: host + "/api/logos.php",
+        url: host + "/api/posters.php",
         type: "GET",
         beforeSend: function (xhr) {
           xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
@@ -161,20 +161,34 @@ $(function() {
         },
         dataSrc: function (data) {
           success_response()
-          
-          $('#page-header').text('Logo Data');
-          $('#admin-section, #page-header-container').removeClass('d-none');
-          $('#client-logo-section').addClass('d-none');
-          $('#page-start-section').removeClass('d-flex')
-                                  .addClass('d-none');
+
           $.each( data, function( index, value ) {
-            display_logo_data(index, value) 
+            display_poster_data(index, value) 
           });
-          
+
           return data;
         },
       }
-    });*/
+    });
+  }
+  
+  /**
+   * select table row
+   */
+  $('#poster-data-table tbody').on( 'click', 'tr', function () {
+    poster_table.$('tr.selected').removeClass('selected');
+    $(this).addClass('selected');
+    
+    var poster_data = poster_table.row('.selected').data();
+    set_request_data(poster_data, 'poster');
+  });
+  
+  function display_poster_data(index, row) {
+    // category
+    row.category = row.category.category;
+    row.index = index + 1;
+    
+    return row;
   }
   
   function readURL(files) {
@@ -197,5 +211,51 @@ $(function() {
     
     readURL(this.files);
   });
+  
+  $('#get-poster-data').click(function () {
+    get_poster_data();
+    
+    $('#page-header').text('Poster Data');
+    $('#poster-data').removeClass('d-none');
+    $('#logo-data, #admin-dash').addClass('d-none');
+  });
+  
+  $('#download-pimages').click(function () {
+    var username = $('#username-input').val().trim();
+    var password = $('#password-input').val().trim();
+    var encodedData = window.btoa(username + ':' + password);
+    
+    $.ajax({
+      url: get_pimage_url(),
+      dataType: 'json',
+      method: 'GET',
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
+      },
+    }).done(function(response, status) {
+      success_response(response);
+      
+      $('#admin-section, #page-header-container').removeClass('d-none');
+      $('#page-start-section').removeClass('d-flex').addClass('d-none');
+      $('#client-logo-section').addClass('d-none');
+    }).fail(function (response, status, error) {
+      fail_response(response, status, error);
+    });
+  });
+  
+  function get_pimage_url() {
+    var url = new URL(host + "/api/posters.php");
+    var query_string = url.search;
+
+    var search_params = new URLSearchParams(query_string); 
+    search_params.set('id', $('#poster-id').val());
+    search_params.set('filter', 'images');
+
+    // change the search property of the main url
+    url.search = search_params.toString();
+
+    return url.toString();
+  }
+  
 });
 

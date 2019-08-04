@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 25, 2019 at 12:54 PM
--- Server version: 5.7.26
+-- Generation Time: Aug 04, 2019 at 04:47 PM
+-- Server version: 5.7.27
 -- PHP Version: 7.2.19-0ubuntu0.19.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -34,36 +34,6 @@ CREATE TABLE `chosen_items` (
   `item_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `chosen_items`
---
-
-INSERT INTO `chosen_items` (`id`, `logo_id`, `item_id`) VALUES
-(34, 11, 10),
-(35, 11, 9),
-(36, 11, 7),
-(37, 12, 10),
-(38, 12, 8),
-(39, 13, 11),
-(40, 13, 5),
-(41, 13, 6),
-(42, 14, 9),
-(43, 14, 11),
-(44, 14, 5),
-(45, 14, 6),
-(46, 15, 9),
-(47, 15, 10),
-(48, 15, 12),
-(49, 15, 11),
-(50, 15, 5),
-(51, 15, 6),
-(52, 15, 7),
-(53, 15, 8),
-(54, 16, 10),
-(55, 16, 11),
-(56, 16, 6),
-(57, 16, 5);
-
 -- --------------------------------------------------------
 
 --
@@ -78,18 +48,6 @@ CREATE TABLE `logos` (
   `type` varchar(100) DEFAULT NULL,
   `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `logos`
---
-
-INSERT INTO `logos` (`id`, `category`, `line_1`, `line_2`, `type`, `email`) VALUES
-(11, 14, 'boby', 'one blood', 'car', 'pp@oo.pp'),
-(12, 12, 'food', 'lick', 'plate', 'ex.amp.le'),
-(13, 6, 'apion', 'dope', '', 'lo.as@opion.ko'),
-(14, 5, 'play', 'play hard', '', 'info@play.com'),
-(15, 8, 'bizz', 'nezz', 'biashara', 'kmkioko@gmail.com'),
-(16, 5, 'one', 'i', '', 'kmkioko@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -145,19 +103,62 @@ CREATE TABLE `logo_items` (
   `type` enum('logo','font') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `logo_items`
+-- Table structure for table `posters`
 --
 
-INSERT INTO `logo_items` (`id`, `name`, `description`, `img_src`, `img_alt`, `type`) VALUES
-(5, 'Initial', 'Emphasize one letter in your name. ', 'type_initial.jpg\r\n', 'initial logo', 'logo'),
-(6, 'Icon', 'Feature an icon related to your business. ', 'type_icon.jpg', 'icon logo', 'logo'),
-(7, 'Badge', 'Place your text inside a badge design. ', 'type_badge.jpg\r\n', 'badge logo', 'logo'),
-(8, 'Text', 'Use font to define your brand. ', 'type_text.jpg\r\n', 'text logo', 'logo'),
-(9, 'Sans Serif', 'Modern fonts with straight lines. ', ' font_sanserif.jpg ', 'sans serif font', 'font'),
-(10, 'Serif', 'Traditional fonts with embellishments. ', 'font_serif.jpg', 'serif font', 'font'),
-(11, 'Script', 'Elegant handwritten fonts. ', 'font_script.jpg', 'script font', 'font'),
-(12, 'Display', 'Bold fonts with a unique style. ', 'font_display.jpg', 'display font', 'font');
+CREATE TABLE `posters` (
+  `id` int(11) NOT NULL,
+  `category` int(11) NOT NULL,
+  `header` varchar(200) DEFAULT NULL,
+  `title` varchar(200) DEFAULT NULL,
+  `main` varchar(200) DEFAULT NULL,
+  `footer` varchar(200) DEFAULT NULL,
+  `background` varchar(200) DEFAULT NULL,
+  `email` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `poster_categories`
+--
+
+CREATE TABLE `poster_categories` (
+  `id` int(11) NOT NULL,
+  `category` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `poster_categories`
+--
+
+INSERT INTO `poster_categories` (`id`, `category`) VALUES
+(1, 'Advertising'),
+(2, 'Political'),
+(3, 'Movie'),
+(4, 'Affirmation & Motivational'),
+(5, 'Event'),
+(6, 'Travel'),
+(7, 'Educational'),
+(8, 'Blacklight'),
+(9, 'promotional'),
+(10, 'Pin-up');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `poster_images`
+--
+
+CREATE TABLE `poster_images` (
+  `id` int(11) NOT NULL,
+  `poster_id` int(11) NOT NULL,
+  `dir` varchar(200) NOT NULL,
+  `files` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -211,6 +212,26 @@ ALTER TABLE `logo_items`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `posters`
+--
+ALTER TABLE `posters`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category` (`category`);
+
+--
+-- Indexes for table `poster_categories`
+--
+ALTER TABLE `poster_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `poster_images`
+--
+ALTER TABLE `poster_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `poster` (`poster_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -225,13 +246,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `chosen_items`
 --
 ALTER TABLE `chosen_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `logos`
 --
 ALTER TABLE `logos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `logo_categories`
@@ -243,7 +264,25 @@ ALTER TABLE `logo_categories`
 -- AUTO_INCREMENT for table `logo_items`
 --
 ALTER TABLE `logo_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `posters`
+--
+ALTER TABLE `posters`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `poster_categories`
+--
+ALTER TABLE `poster_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `poster_images`
+--
+ALTER TABLE `poster_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -267,6 +306,18 @@ ALTER TABLE `chosen_items`
 --
 ALTER TABLE `logos`
   ADD CONSTRAINT `logos_ibfk_1` FOREIGN KEY (`category`) REFERENCES `logo_categories` (`id`);
+
+--
+-- Constraints for table `posters`
+--
+ALTER TABLE `posters`
+  ADD CONSTRAINT `posters_ibfk_1` FOREIGN KEY (`category`) REFERENCES `poster_categories` (`id`);
+
+--
+-- Constraints for table `poster_images`
+--
+ALTER TABLE `poster_images`
+  ADD CONSTRAINT `poster_images_ibfk_1` FOREIGN KEY (`poster_id`) REFERENCES `posters` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
