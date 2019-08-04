@@ -121,12 +121,10 @@
       private function download_poster_imgs()
       {
           if(!empty($_GET["filter"]) && !empty($_GET["id"])){
-            $poster_id = $_GET["id"];
-            
-            $this->server_reply([
-              'message' => 'Downloading!',
-            ]);
+            $poster = $this->model->get($_GET["id"]);
+            $this->output_file($poster['images']['zip']);
           }
       }
+
   }
   

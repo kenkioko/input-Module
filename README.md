@@ -89,6 +89,6 @@ Edit the js file /api/inputModal.js and change the host var
   /**
    * Back-end Server Host URL
    */
-  var host = 'http://127.0.0.1:8000';
+  var host = 'http://127.0.0.1';
 ```
 

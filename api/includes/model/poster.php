@@ -3,10 +3,13 @@
   require_once 'model.php';
 
   use PDO;
+  use ZipArchive;
   use Api\Includes\Model\Model;
   
   class Poster extends Model
   {
+      private $storage = __DIR__ .'/../storage';
+      
       public function read()
       {
         $output = [];
@@ -107,8 +110,7 @@
       
       private function save_files($files, $dir)
       {
-          $storage = __DIR__ .'/../storage';
-          $dir = $storage .'/' .$dir;
+          $dir = $this->storage .'/' .$dir;
           mkdir($dir, 0755);
           $uploaded = [];
           
@@ -122,6 +124,59 @@
           }
           
           return $uploaded;
+      }
+      
+      public function get($id)
+      {
+          $sql = 'SELECT * FROM posters WHERE id = :id';
+          $stmt = $this->db_conn->db_instance()->prepare($sql);                    
+          
+          $stmt->bindParam(':id', $id);
+          $stmt->execute();
+          $poster = $stmt->fetch(PDO::FETCH_NAMED);
+          
+          // poster images
+          $sql = 'SELECT dir, files FROM poster_images WHERE poster_id = :poster_id';
+          $stmt = $this->db_conn->db_instance()->prepare($sql);                    
+          
+          $stmt->bindParam(':poster_id', $poster['id']);
+          $stmt->execute();
+          $images = $stmt->fetch(PDO::FETCH_NAMED);
+          
+          //zip img files
+          $images = $this->zip_image_files($images);
+          $poster['images'] = $images;
+          
+          return $poster;
+      }
+      
+      private function zip_image_files($images)
+      {
+          $file_dir = $this->storage .'/' .$images['dir'];
+          $filename = $images['dir'] . '.zip';
+
+          if (!file_exists($file_dir .'/' .$filename)) {
+            $zip = new ZipArchive();
+            if ($zip->open(
+                  $file_dir .'/' .$filename, 
+                  ZipArchive::CREATE 
+                ) !== true
+            ){
+              $this->server_reply([
+                'message' => 'cannot open ' .$filename .'!',
+              ], 500);
+            }
+
+            $files = json_decode($images['files']);
+            foreach ($files as $index => $value) {
+              $zip->addFile($file_dir .'/' .$value);
+            }
+
+            $zip->close();
+          }
+
+          $images['zip'] = $file_dir .'/' .$filename;
+          return $images;
       }
   }
   

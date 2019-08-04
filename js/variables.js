@@ -17,7 +17,7 @@ export {
 /**
  * Back-end Server Host URL
  */
-let host = 'http://127.0.0.1:8000';
+let host = 'http://127.0.0.1';
 
 /**
  * logo text to be passed to the server
@@ -117,7 +117,7 @@ function set_category_options(index, category, element) {
 }
 
 function set_request_data(data, data_category) {
-  console.log(data);
+  $('#download-pimages-progress').addClass('d-none');
   $('#request-client-email').text(data.email);
   $('#request-category-text').text(data.category);
   

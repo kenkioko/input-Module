@@ -224,24 +224,41 @@ $(function() {
     var username = $('#username-input').val().trim();
     var password = $('#password-input').val().trim();
     var encodedData = window.btoa(username + ':' + password);
+    $('#download-pimages-progress').removeClass('d-none');
     
     $.ajax({
       url: get_pimage_url(),
-      dataType: 'json',
       method: 'GET',
+      xhrFields: {
+        responseType: 'blob'
+      },
       beforeSend: function (xhr) {
         xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
+        $('#download-pimages-progress').text('zipping images');
       },
     }).done(function(response, status) {
-      success_response(response);
-      
       $('#admin-section, #page-header-container').removeClass('d-none');
       $('#page-start-section').removeClass('d-flex').addClass('d-none');
       $('#client-logo-section').addClass('d-none');
+      
+      success_response();
+      download_zip(response);
     }).fail(function (response, status, error) {
       fail_response(response, status, error);
+      $('#download-pimages-progress').text(status);
     });
   });
+  
+  function download_zip(data) {
+    var link = document.createElement('a');
+    var url = window.URL.createObjectURL(data);
+    link.href = url;
+    link.download = 'images.zip';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  }
   
   function get_pimage_url() {
     var url = new URL(host + "/api/posters.php");
