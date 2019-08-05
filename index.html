@@ -253,6 +253,7 @@
               </ul>
             </div>
           </div>
+          
           <!-- Data Tables -->
           <div class="col p-3 shadow border d-none" id="logo-data">
             <table class="row-border hover w-100" id="logo-data-table">
@@ -264,9 +265,26 @@
               <tbody></tbody>
             </table>
           </div>
-          <!-- Admin Dashboard Tables -->
+          
+          <!-- User Management -->
+          <div class="col p-3 shadow border d-none" id="user-manage">
+            <div class="d-flex">
+              <button type="button" class="btn btn-primary rounded-0 m-2" data-toggle="modal" data-target="#addUserModal">
+                Add User
+              </button>
+              <p id="add-user-errors" class="text-danger d-none ml-auto align-self-center"></p>
+            </div>
+
+            <hr class="w-100">
+            
+            <table class="row-border hover stripe w-100" id="users-table">
+              <tbody></tbody>
+            </table>
+          </div>
+          
+          <!-- Admin Dashboard -->
           <div class="col p-3 shadow border d-none" id="admin-dash">
-            //
+            
           </div>
         </div>
       </section>
@@ -317,6 +335,37 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-primary rounded-0 d-none" data-dismiss="modal" id="logo-text-ok">OK</button>
             <button type="button" class="btn btn-success rounded-0" data-dismiss="modal" id="logo-next-font">Choose Logo Fonts</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <!-- Add User Modal -->
+    <div class="modal fade mt-5" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content rounded-0">
+          
+          <div class="modal-body">
+            <form class="p-2" id="cred-form" autocomplete="off">
+              <div class="form-group">
+                <label for="username-input">Username</label>
+                <input type="text" class="form-control" id="new-user-input" placeholder="username">
+              </div>
+              <div class="form-group">
+                <label for="password-input">Password</label>
+                <input type="password" class="form-control" id="new-pass-input" placeholder="password">
+              </div>
+            </form>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-success rounded-0" data-dismiss="modal" id="add-user-btn">
+              Add
+            </button>
           </div>
           
         </div>
@@ -715,7 +764,8 @@
     <script src="https://cdn.auth0.com/js/auth0/9.10/auth0.min.js"></script>
     <!-- custom .js -->
     <script src="js/vue.js" type="module"></script>
-    <script src="js/auth.js" type="module"></script>    
+    <script src="js/auth.js" type="module"></script>
+    <script src="js/admin.js" type="module"></script>
     <script src="js/js_triggers.js" type="module"></script>
     <script src="js/logo_request.js" type="module"></script>
     <script src="js/poster_request.js" type="module"></script>

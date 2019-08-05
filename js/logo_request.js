@@ -268,7 +268,7 @@ $(function() {
     
     $('#page-header').text('Logo Data');
     $('#logo-data').removeClass('d-none');
-    $('#poster-data, #admin-dash').addClass('d-none');    
+    $('#poster-data, #admin-dash, #user-manage').addClass('d-none');    
   });
   
 });

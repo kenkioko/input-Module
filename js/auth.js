@@ -71,7 +71,7 @@ $(function() {
     }).done(function(response, status) {
       success_response(response);
       
-      $('#admin-section, #page-header-container').removeClass('d-none');
+      $('#admin-section, #page-header-container, #admin-dash').removeClass('d-none');
       $('#page-start-section').removeClass('d-flex').addClass('d-none');
       $('#client-logo-section').addClass('d-none');
     }).fail(function (response, status, error) {

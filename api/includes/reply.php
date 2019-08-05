@@ -18,7 +18,7 @@
       {
           if (file_exists($file_url)) {
             header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
+            header('Content-Type: application/zip');
             header(
               'Content-Disposition: attachment; filename="'
               .basename($file_url)

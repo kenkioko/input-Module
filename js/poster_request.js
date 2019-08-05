@@ -200,26 +200,6 @@ $(function() {
     });
   }
   
-  $('#submit-poster-data').click(function () {
-    submit_data();
-  });
-  
-  $('#poster-images-input').change(function () {
-    $('#poster-images-label').text(
-     this.files.length + ' file(s) selected.'
-    );
-    
-    readURL(this.files);
-  });
-  
-  $('#get-poster-data').click(function () {
-    get_poster_data();
-    
-    $('#page-header').text('Poster Data');
-    $('#poster-data').removeClass('d-none');
-    $('#logo-data, #admin-dash').addClass('d-none');
-  });
-  
   $('#download-pimages').click(function () {
     var username = $('#username-input').val().trim();
     var password = $('#password-input').val().trim();
@@ -273,6 +253,29 @@ $(function() {
 
     return url.toString();
   }
+  
+  /**
+   * function triggers
+   */
+  $('#submit-poster-data').click(function () {
+    submit_data();
+  });
+  
+  $('#poster-images-input').change(function () {
+    $('#poster-images-label').text(
+     this.files.length + ' file(s) selected.'
+    );
+    
+    readURL(this.files);
+  });
+  
+  $('#get-poster-data').click(function () {
+    get_poster_data();
+    
+    $('#page-header').text('Poster Data');
+    $('#poster-data').removeClass('d-none');
+    $('#logo-data, #admin-dash, #user-manage').addClass('d-none');
+  });
   
 });
 
