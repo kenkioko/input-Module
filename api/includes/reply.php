@@ -6,6 +6,8 @@
        */
       protected function server_reply($reply_data, $status_code = 200)
       {
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Origin: *");
         http_response_code($status_code);
         echo json_encode($reply_data);
         exit();
@@ -18,6 +20,7 @@
       {
           if (file_exists($file_url)) {
             header('Content-Description: File Transfer');
+            header("Access-Control-Allow-Origin: *");
             header('Content-Type: application/zip');
             header(
               'Content-Disposition: attachment; filename="'

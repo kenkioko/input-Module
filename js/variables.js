@@ -17,7 +17,7 @@ export {
 /**
  * Back-end Server Host URL
  */
-let host = 'http://127.0.0.1';
+let host = 'http://127.0.0.1:8000';
 
 /**
  * logo text to be passed to the server
