@@ -18,7 +18,7 @@
       protected function get()
       {   
           $this->server_reply([
-            'message' => 'login success',
+            'message' => 'login success!',
           ]);
       }
 

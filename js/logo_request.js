@@ -3,7 +3,8 @@ import {
   logo_text,
   logo_fonts,
   logo_types,
-  scroll_top,  
+  scroll_top,
+  authenticated,
   fail_response,
   success_response,
   set_request_data,
@@ -56,7 +57,7 @@ $(function() {
     hide_errors();
     
     $.ajax({
-      url: host + "/api/logos.php",
+      url: host.url + "/api/logos.php",
       data: get_data(),
       dataType: 'json',
       method: 'POST',
@@ -77,7 +78,7 @@ $(function() {
    */
   function get_categories() {
     $.ajax({
-      url: host + "/api/logo_categories.php",
+      url: host.url + "/api/logo_categories.php",
       dataType: 'json',
       method: 'GET',
     }).done(function(response, status) {
@@ -96,7 +97,7 @@ $(function() {
    */
   function get_items() {
     $.ajax({
-      url: host + "/api/items.php",
+      url: host.url + "/api/items.php",
       dataType: 'json',
       method: 'GET',
     }).done(function(response, status) {
@@ -126,10 +127,6 @@ $(function() {
    * logo data from the server
    */
   function get_logo_data() {
-    var username = $('#username-input').val().trim();
-    var password = $('#password-input').val().trim();
-    var encodedData = window.btoa(username + ':' + password);
-    
     logo_table = $('#logo-data-table').DataTable({
       destroy: true,
       columns:[
@@ -138,10 +135,13 @@ $(function() {
         { data: 'category', title: 'Business Category'},
       ],
       ajax: {
-        url: host + "/api/logos.php",
+        url: host.url + "/api/logos.php",
         type: "GET",
         beforeSend: function (xhr) {
-          xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
+          xhr.setRequestHeader (
+            'Authorization', 
+            'Basic ' + authenticated.encodedData
+          );
         },
         error: function (response, status, error) {
           fail_response(response, status, error);

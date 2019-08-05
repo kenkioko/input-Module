@@ -86,9 +86,16 @@ Edit the /api/includes/.env file
 **For Js Config**
 Edit the js file /api/inputModal.js and change the host var
 ```javascript
+  
   /**
    * Back-end Server Host URL
+   * dynamic_url: host changes with window url
+   * for production, dynamic_url = false
    */
-  var host = 'http://127.0.0.1';
+  let host = {
+    url: 'http://127.0.0.1',
+    dynamic_url: true
+  }
+  
 ```
 

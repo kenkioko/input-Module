@@ -1,5 +1,6 @@
 import {
   host,
+  authenticated,
   fail_response,
   success_response,
 } from './variables.js';
@@ -40,13 +41,13 @@ $(function() {
     webAuth.authorize({
       connection: 'google-oauth2',
       responseType: 'token',
-      redirect_uri: host
+      redirect_uri: host.url
     }); 
   });
   
   $('#auth-logout').click(function () {
     webAuth.logout({
-      returnTo: host,
+      returnTo: host.url,
       client_id: client_id
     });
   });    
@@ -57,16 +58,17 @@ $(function() {
    * login to admin dashboard
    */
   $('#admin-login').click(function () {
-    var username = $('#username-input').val().trim();
-    var password = $('#password-input').val().trim();
-    var encodedData = window.btoa(username + ':' + password);
+    set_authenicated()
     
     $.ajax({
-      url: host + "/api/admin.php",
+      url: host.url + "/api/admin.php",
       dataType: 'json',
       method: 'GET',
       beforeSend: function (xhr) {
-        xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
+        xhr.setRequestHeader (
+          'Authorization', 
+          'Basic ' + authenticated.encodedData
+        );
       },
     }).done(function(response, status) {
       success_response(response);
@@ -78,6 +80,16 @@ $(function() {
       fail_response(response, status, error);
     });
   });
+  
+  function set_authenicated() {
+    authenticated.username = $('#username-input').val().trim();
+    authenticated.password = $('#password-input').val().trim();
+    authenticated.encodedData = window.btoa(
+      authenticated.username 
+      + ':' + 
+      authenticated.password
+    );
+  }
   
 });
 

@@ -1,5 +1,4 @@
 import { 
-  host,
   logo_text,
   logo_fonts,
   logo_types,

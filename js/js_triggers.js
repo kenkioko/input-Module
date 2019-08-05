@@ -100,10 +100,28 @@ $(function() {
    * press enter on the admin login form
    */
   $('#cred-form').keypress(function (e) {
+    var el_id = '#admin-login';
+    if($('#cred-type').val().trim() != ''){
+      el_id = '#add-user-confirm';
+    }
+    
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode == '13'){
-      $('#admin-login').trigger('click');
+      $(el_id).trigger('click');
     }
+  });
+  
+  $('#add-user-btn').click(function () {
+    $('#cred-type').val('add');
+    $('#username-input, #password-input').val('');
+    $('#admin-login, #cred-modal-header').addClass('d-none');    
+    $('#add-user-confirm, #confirm-password-group').removeClass('d-none');
+    $('#cred-form').attr('autocomplete', 'off');
+    $('#credentialsModal').modal('show');
+  });
+  
+  $('#admin-login-btn').click(function () {
+    $('#cred-type').val('');
   });
 
 });

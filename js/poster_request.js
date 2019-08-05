@@ -3,6 +3,7 @@ import {
   scroll_top,
   poster_data,
   poster_images,
+  authenticated,
   fail_response,
   success_response,
   set_request_data,
@@ -26,7 +27,7 @@ $(function() {
    */
   function get_categories() {
     $.ajax({
-      url: host + "/api/poster_categories.php",
+      url: host.url + "/api/poster_categories.php",
       dataType: 'json',
       method: 'GET',
     }).done(function(response, status) {
@@ -102,7 +103,7 @@ $(function() {
       scroll_top();
     };
     
-    request.open("POST", host + "/api/posters.php");
+    request.open("POST", host.url + "/api/posters.php");
     request.send(get_form_data());
   }
 
@@ -139,10 +140,6 @@ $(function() {
    * poster data from the server
    */
   function get_poster_data() {
-    var username = $('#username-input').val().trim();
-    var password = $('#password-input').val().trim();
-    var encodedData = window.btoa(username + ':' + password);
-    
     poster_table = $('#poster-data-table').DataTable({
       destroy: true,
       columns:[
@@ -151,10 +148,13 @@ $(function() {
         { data: 'category', title: 'Poster Category'},
       ],
       ajax: {
-        url: host + "/api/posters.php",
+        url: host.url + "/api/posters.php",
         type: "GET",
         beforeSend: function (xhr) {
-          xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
+          xhr.setRequestHeader (
+            'Authorization', 
+            'Basic ' + authenticated.encodedData
+          );
         },
         error: function (response, status, error) {
           fail_response(response, status, error);
@@ -201,9 +201,6 @@ $(function() {
   }
   
   $('#download-pimages').click(function () {
-    var username = $('#username-input').val().trim();
-    var password = $('#password-input').val().trim();
-    var encodedData = window.btoa(username + ':' + password);
     $('#download-pimages-progress').removeClass('d-none');
     
     $.ajax({
@@ -213,8 +210,12 @@ $(function() {
         responseType: 'blob'
       },
       beforeSend: function (xhr) {
-        xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
         $('#download-pimages-progress').text('zipping images');
+        
+        xhr.setRequestHeader (
+          'Authorization', 
+          'Basic ' + authenticated.encodedData
+        );        
       },
     }).done(function(response, status) {
       $('#admin-section, #page-header-container').removeClass('d-none');
@@ -241,7 +242,7 @@ $(function() {
   }
   
   function get_pimage_url() {
-    var url = new URL(host + "/api/posters.php");
+    var url = new URL(host.url + "/api/posters.php");
     var query_string = url.search;
 
     var search_params = new URLSearchParams(query_string); 

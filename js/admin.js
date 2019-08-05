@@ -1,6 +1,7 @@
 import {
   host,
   scroll_top,
+  authenticated,
   fail_response,
   success_response,
 } from './variables.js';
@@ -17,10 +18,6 @@ $(function() {
    * poster data from the server
    */
   function get_user_data() {
-    var username = $('#username-input').val().trim();
-    var password = $('#password-input').val().trim();
-    var encodedData = window.btoa(username + ':' + password);
-    
     user_table = $('#users-table').dataTable({
       destroy: true,
       columns:[
@@ -29,10 +26,13 @@ $(function() {
         { title: 'Delete Users', width: "20%", defaultContent: delete_button },
       ],
       ajax: {
-        url: host + "/api/users.php",
+        url: host.url + "/api/users.php",
         type: "GET",
         beforeSend: function (xhr) {
-          xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
+          xhr.setRequestHeader (
+            'Authorization', 
+            'Basic ' + authenticated.encodedData
+          );
         },
         error: function (response, status, error) {
           fail_response(response, status, error);
@@ -55,45 +55,57 @@ $(function() {
     return row;
   }
   
-  function get_data() {
-    return {
-      username: $('#new-user-input').val(),
-      password: $('#new-pass-input').val()
-    }
-  }
-  
-  $('#add-user-btn').click(function () {
-    $('#add-user-errors').addClass('d-none');
-
-    var username = $('#username-input').val().trim();
-    var password = $('#password-input').val().trim();
-    var encodedData = window.btoa(username + ':' + password);
-    $('#download-pimages-progress').removeClass('d-none');
-  
+  /**
+   * send user request to the server
+   */  
+  function add_user_request(username, password) {
     $.ajax({
-      url: host + "/api/users.php",
-      data: get_data(),
+      url: host.url + "/api/users.php",
       dataType: 'json',
       method: 'POST',
+      data: {
+        username: username,
+        password: password
+      },
       beforeSend: function (xhr) {
-        xhr.setRequestHeader ('Authorization', 'Basic ' + encodedData);
+        xhr.setRequestHeader (
+          'Authorization', 
+          'Basic ' + authenticated.encodedData
+        );
       },
     }).done(function(response, status) {
       success_response(response);
-      get_user_data();
-      
-      $('#new-user-input').val('');
-      $('#new-pass-input').val('');
+      get_user_data();      
     }).fail(function (response, status, error) {      
       fail_response(response, status, error);
       display_errors(response);
     }).always(function (response, status) {
       scroll_top();
     });
+  }
+  
+  $('#add-user-confirm').click(function () {
+    $('#add-user-errors').addClass('d-none');
+  
+    var username = $('#username-input').val().trim();
+    var password = $('#password-input').val();
+    var password_conf = $('#confirm-password-input').val();
+    
+    if(password === password_conf){
+      add_user_request(username, password);
+    } else {
+      display_errors('password missmatch!', true);
+    }
+
   });
   
-  function display_errors(response) {
+  function display_errors(response, form=false) {
     $('#add-user-errors').removeClass('d-none');
+    if(form){
+      $('#add-user-errors').text(response);
+      return;
+    }
+
     var error_string = '';
     $.each(response.responseJSON.errors, function (key, value) {
       error_string += '[' + value + '] '

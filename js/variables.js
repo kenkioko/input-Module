@@ -7,6 +7,7 @@ export {
   scroll_top,
   poster_data,
   poster_images,
+  authenticated,
   fail_response,
   success_response,
   set_request_data,
@@ -16,8 +17,13 @@ export {
 
 /**
  * Back-end Server Host URL
+ * dynamic_url: host changes with window url
+ * for production, dynamic_url = false
  */
-let host = 'http://127.0.0.1:8000';
+let host = {
+  url: 'http://127.0.0.1',
+  dynamic_url: true
+}
 
 /**
  * logo text to be passed to the server
@@ -71,6 +77,15 @@ let first_time = {
   logo_text: true,
   logo_font: true,
   logo_type: true
+};
+
+/**
+ * Authenticated user details
+ */
+let authenticated = {
+  username: null,
+  password: null,
+  encodedData: null
 };
 
 function scroll_top() {
