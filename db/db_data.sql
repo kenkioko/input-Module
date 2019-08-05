@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 04, 2019 at 06:56 PM
+-- Generation Time: Aug 05, 2019 at 12:46 PM
 -- Server version: 5.7.27
 -- PHP Version: 7.2.19-0ubuntu0.19.04.1
 
@@ -103,6 +103,20 @@ CREATE TABLE `logo_items` (
   `type` enum('logo','font') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `logo_items`
+--
+
+INSERT INTO `logo_items` (`id`, `name`, `description`, `img_src`, `img_alt`, `type`) VALUES
+(5, 'Initial', 'Emphasize one letter in your name. ', 'type_initial.jpg\r\n', 'initial logo', 'logo'),
+(6, 'Icon', 'Feature an icon related to your business. ', 'type_icon.jpg', 'icon logo', 'logo'),
+(7, 'Badge', 'Place your text inside a badge design. ', 'type_badge.jpg\r\n', 'badge logo', 'logo'),
+(8, 'Text', 'Use font to define your brand. ', 'type_text.jpg\r\n', 'text logo', 'logo'),
+(9, 'Sans Serif', 'Modern fonts with straight lines. ', ' font_sanserif.jpg ', 'sans serif font', 'font'),
+(10, 'Serif', 'Traditional fonts with embellishments. ', 'font_serif.jpg', 'serif font', 'font'),
+(11, 'Script', 'Elegant handwritten fonts. ', 'font_script.jpg', 'script font', 'font'),
+(12, 'Display', 'Bold fonts with a unique style. ', 'font_display.jpg', 'display font', 'font');
+
 -- --------------------------------------------------------
 
 --
@@ -178,7 +192,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `verified`) VALUES
-(5, 'username', '$2y$10$SUR.L4oHsDGsKULeUeamYek/bBZwGe2oJy/LPhsmnLg093U8TCp9S', 0);
+(5, 'username', '$2y$10$SUR.L4oHsDGsKULeUeamYek/bBZwGe2oJy/LPhsmnLg093U8TCp9S', 0),
+(6, 'admin', '$2y$10$hR6j..N4VHkdZVaHy.xxeuF570ranB0ho9XKK.DpQZhwuJfwYnHXW', 0),
+(7, 'example', '$2y$10$6ZuRPrbfOzDQUa5O2Lkg5uOYuML5wYMgs5nO7vp8aa7C0BjKMix/e', 0),
+(8, 'kioko', '$2y$10$hq8idckHZTGsSgqTAwsgbehcwkd1Ietd3fvRatAsrwto6ijD4Csc2', 0);
 
 --
 -- Indexes for dumped tables
@@ -264,7 +281,7 @@ ALTER TABLE `logo_categories`
 -- AUTO_INCREMENT for table `logo_items`
 --
 ALTER TABLE `logo_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `posters`
@@ -288,7 +305,7 @@ ALTER TABLE `poster_images`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
