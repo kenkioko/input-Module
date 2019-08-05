@@ -18,7 +18,7 @@ $(function() {
    * poster data from the server
    */
   function get_user_data() {
-    user_table = $('#users-table').dataTable({
+    user_table = $('#users-table').DataTable({
       destroy: true,
       columns:[
         { data: 'index', title: '#', width: "10%" },
@@ -114,9 +114,47 @@ $(function() {
     $('#add-user-errors').text(error_string);
   }
   
+  function get_delete_url() {
+    var url = new URL(host.url + "/api/users.php");
+    var query_string = url.search;
+
+    var search_params = new URLSearchParams(query_string); 
+    search_params.set('id', $('#delete-userid').val());
+
+    // change the search property of the main url
+    url.search = search_params.toString();
+
+    return url.toString();
+  }
+  
   $('#users-table tbody').on('click', 'button', function () {
     var data = user_table.row($(this).parents('tr')).data();
-    console.log(user_table.data());
+
+    $('#delete-userid').val(data.id);
+    $('#delete-username').text(data.username);
+    $('#deleteModal').modal('show');
+  });
+  
+  $('#confirm-delete').click(function () {
+    $.ajax({
+      url: get_delete_url(),
+      dataType: 'json',
+      method: 'DELETE',
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader (
+          'Authorization', 
+          'Basic ' + authenticated.encodedData
+        );
+      },
+    }).done(function(response, status) {
+      success_response(response);
+      get_user_data();      
+    }).fail(function (response, status, error) {      
+      fail_response(response, status, error);
+      display_errors(response);
+    }).always(function (response, status) {
+      scroll_top();
+    });
   });
   
   $('#admin-users').click(function () {

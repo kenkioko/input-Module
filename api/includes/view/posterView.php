@@ -45,7 +45,7 @@
 
           $message = 'Request successful!';
           $code = 201;
-          if (!$create || !isset($create['id'])) {
+          if (!$create || !isset($create['id']) || $create['id'] == 0) {
             $message = 'There was an error while making the request!';
             $code = 400;
           }

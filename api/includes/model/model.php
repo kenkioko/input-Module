@@ -32,7 +32,7 @@
           # code...
       }
       
-      public function delete()
+      public function delete($id)
       {
           # code...
       }

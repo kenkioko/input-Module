@@ -32,7 +32,7 @@
 
           $message = 'Request successful!';
           $code = 201;
-          if (!$create || !isset($create['id'])) {
+          if (!$create || !isset($create['id']) || $create['id'] == 0) {
             $message = 'There was an error while making the request!';
             $code = 400;
           }
@@ -63,6 +63,27 @@
               'errors' => $error_found
             ], 400);
           }
+      }
+      
+      protected function delete()
+      {
+          if (empty($_GET['id'])) {
+            $this->server_reply([
+              'message' => 'User id not found!',
+            ], 400);
+          }
+          
+          $delete = $this->model->delete($_GET['id']);
+          $message = 'Delete successful!';
+          $code = 200;
+          if (!$delete) {
+            $message = 'There was an error while making the request!';
+            $code = 400;
+          }
+
+          $this->server_reply([
+            'message' => $message,
+          ], $code);
       }
 
   }

@@ -112,10 +112,10 @@ $(function() {
   });
   
   $('#add-user-btn').click(function () {
-    $('#cred-type').val('add');
-    $('#username-input, #password-input').val('');
+    $('#cred-type').val('add');    
     $('#admin-login, #cred-modal-header').addClass('d-none');    
     $('#add-user-confirm, #confirm-password-group').removeClass('d-none');
+    $('#username-input, #password-input, #confirm-password-input').val('');
     $('#cred-form').attr('autocomplete', 'off');
     $('#credentialsModal').modal('show');
   });
