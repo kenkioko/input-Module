@@ -169,7 +169,7 @@
 
             $files = json_decode($images['files']);
             foreach ($files as $index => $value) {
-              $zip->addFile($file_dir .'/' .$value);
+              $zip->addFile($file_dir .'/' .$value, $value);
             }
 
             $zip->close();
