@@ -6,17 +6,24 @@
   
   class AuthView extends View
   {
+      public $username = '';
+      public $password = '';
+      
       public function authenticate()
       {
         $user = new User;
         $authenticated = false;
-        $username = $_SERVER['PHP_AUTH_USER'];
-        $password = $_SERVER['PHP_AUTH_PW'];
         
-        if (isset($username)) {
-          $pass_hash = $user->get($username)['password'];
-          $authenticated = password_verify($password, $pass_hash);
+        if(!empty($_SERVER['PHP_AUTH_USER'])){
+          $this->username = $_SERVER['PHP_AUTH_USER'];
         }
+        
+        if(!empty($_SERVER['PHP_AUTH_PW'])){
+          $this->password = $_SERVER['PHP_AUTH_PW'];
+        }
+
+        $pass_hash = $user->get($this->username)['password'];
+        $authenticated = password_verify($this->password, $pass_hash);
         
         if(!$authenticated){
           $this->server_reply([

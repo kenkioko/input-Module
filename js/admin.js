@@ -10,7 +10,7 @@ $(function() {
   var user_table;
   
   var delete_button = 
-    `<button type="button" class="btn btn-sm btn-danger w-100">
+    `<button type="button" class="btn btn-sm btn-danger w-100 rounded-0">
       Delete
     </button>`;
 

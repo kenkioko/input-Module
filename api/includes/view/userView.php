@@ -10,13 +10,15 @@
   
   class UserView extends View
   {
+      private $auth = null;
+      
       function __construct()
       {
           $this->model = new User;
 
-          //Authenticate
-          $auth = new AuthView;
-          $auth->authenticate();
+          //Authenticate          
+          $this->auth = new AuthView;
+          $this->auth->authenticate();
       }
       
       protected function get()
@@ -70,6 +72,13 @@
           if (empty($_GET['id'])) {
             $this->server_reply([
               'message' => 'User id not found!',
+            ], 400);
+          }
+          
+          $username = $this->auth->username;
+          if($this->model->get($username)['id'] == $_GET['id']){
+            $this->server_reply([
+              'message' => 'Cannot delete this user "' .$username .'"!',
             ], 400);
           }
           
