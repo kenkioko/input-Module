@@ -59,8 +59,10 @@ $(function() {
 
     $.each(poster_data, function (key, value) {
       if(poster_data[key]){
-        formData.append(key, value);
+        //formData.append(key, value);
       }
+      
+      formData.append(key, value);
     });
     
     var img_files = document.getElementById('poster-images-input');
