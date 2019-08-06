@@ -64,14 +64,14 @@
           $error = false;
           $error_found = [];
           
-          if (empty($_POST["category"])) {
+          if (empty($_POST["category"]) || $_POST["category"] == "") {
             $error = true;
             array_push($error_found, [
               'category' => 'poster category is required!'
             ]);
           }
           
-          if (empty($_POST["email"])) {
+          if (empty($_POST["email"]) || $_POST["email"] == "") {
             $error = true;
             array_push($error_found, [
               'email' => 'customer email is required!'

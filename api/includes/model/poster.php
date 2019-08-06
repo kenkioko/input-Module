@@ -8,7 +8,7 @@
   
   class Poster extends Model
   {
-      private $storage = __DIR__ .'/../storage';
+      private static $storage = __DIR__ .'/../storage';
       
       public function read()
       {
@@ -73,6 +73,7 @@
           if(!empty($_FILES['images'])) {
             $dir = $data['content']['email'] .date('_Y-m-d_His');
             $files = $this->save_files($data['images'], $dir);
+            $encoded_files = json_encode($files);
             
             $sql = "INSERT INTO poster_images "
                 ."(poster_id, dir, files) "
@@ -81,7 +82,7 @@
             $stmt = $this->db_conn->db_instance()->prepare($sql);
             $stmt->bindParam(':poster_id', $poster_id);
             $stmt->bindParam(':dir', $dir);
-            $stmt->bindParam(':files', json_encode($files));
+            $stmt->bindParam(':files', $encoded_files);
             if(!$stmt->execute()) {
               $error = true;
             }
@@ -110,7 +111,7 @@
       
       private function save_files($files, $dir)
       {
-          $dir = $this->storage .'/' .$dir;
+          $dir = self::$storage .'/' .$dir;
           mkdir($dir, 0755);
           $uploaded = [];
           
@@ -152,7 +153,7 @@
       
       private function zip_image_files($images)
       {
-          $file_dir = $this->storage .'/' .$images['dir'];
+          $file_dir = self::$storage .'/' .$images['dir'];
           $filename = $images['dir'] . '.zip';
 
           if (!file_exists($file_dir .'/' .$filename)) {
@@ -167,9 +168,10 @@
               ], 500);
             }
 
+            // add image files
             $files = json_decode($images['files']);
             foreach ($files as $index => $value) {
-              $zip->addFile($file_dir .'/' .$value, $value);
+              $zip->addFile($file_dir .'/' .$value, $images['dir'] .'/' .$value);
             }
 
             $zip->close();
