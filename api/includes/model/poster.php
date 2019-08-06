@@ -71,7 +71,7 @@
           
           // save images
           if(!empty($_FILES['images'])) {
-            $dir = $data['content']['email'] .date('_Y-m-d_H:i:s');
+            $dir = $data['content']['email'] .date('_Y-m-d_His');
             $files = $this->save_files($data['images'], $dir);
             
             $sql = "INSERT INTO poster_images "

@@ -210,7 +210,7 @@ $(function() {
         responseType: 'blob'
       },
       beforeSend: function (xhr) {
-        $('#download-pimages-progress').text('zipping images');
+        $('#download-pimages-progress').text('zipping images...');
         
         xhr.setRequestHeader (
           'Authorization', 
@@ -231,6 +231,8 @@ $(function() {
   });
   
   function download_zip(data) {
+    $('#download-pimages-progress').text('downloading...');
+    
     var link = document.createElement('a');
     var url = window.URL.createObjectURL(data);
     link.href = url;
