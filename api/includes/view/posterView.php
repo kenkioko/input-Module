@@ -23,7 +23,11 @@
           $auth = new AuthView;
           $auth->authenticate();
           
-          $this->download_poster_imgs();
+          //Get poster by id
+          if(!empty($_GET["id"])){
+            $this->download_poster_imgs();
+          }
+          
           $result = $this->model->read();
           $this->server_reply($result);
       }
@@ -120,10 +124,12 @@
       
       private function download_poster_imgs()
       {
-          if(!empty($_GET["filter"]) && !empty($_GET["id"])){
-            $poster = $this->model->get($_GET["id"]);
+          $poster = $this->model->get($_GET["id"]);
+          if(!empty($_GET["filter"]) && $_GET["filter"] == 'images'){            
             $this->output_file($poster['images']['zip']);
           }
+          
+          $this->server_reply($poster);
       }
 
   }
