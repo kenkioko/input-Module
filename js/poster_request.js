@@ -226,12 +226,14 @@ $(function() {
       download_zip(response);
     }).fail(function (response, status, error) {
       fail_response(response, status, error);
-      $('#download-pimages-progress').text(status);
+      $('#download-pimages-progress').text('error zipping files.');
+    }).always(function () {
+      $('#requestModal').modal('hide');
     });
   });
   
   function download_zip(data) {
-    $('#download-pimages-progress').text('downloading...');
+    $('#download-pimages-progress').text('downloading files...');
     
     var link = document.createElement('a');
     var url = window.URL.createObjectURL(data);
