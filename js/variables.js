@@ -1,5 +1,6 @@
 export { 
   host,
+  auth,
   logo_text,
   logo_fonts,
   logo_types,
@@ -23,6 +24,14 @@ export {
 let host = {
   url: 'http://127.0.0.1',
   dynamic_url: true
+}
+
+/**
+ * Auth0 variables
+ */
+let auth = {
+  domain: 'dev-k2n.eu.auth0.com',
+  client_id: 'eLmPtXQDyQXgRqX3DqbnfgOKHPSVg4Gz'
 }
 
 /**

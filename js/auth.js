@@ -1,5 +1,6 @@
 import {
   host,
+  auth,
   authenticated,
   fail_response,
   success_response,
@@ -8,14 +9,10 @@ import {
 $(function() {
   /**
    * using auth0 to get user info
-   * the cliend id for the auth0 app
    */
-  var client_id = 'eLmPtXQDyQXgRqX3DqbnfgOKHPSVg4Gz';
-  
-  // Initialize the Auth0 application
   var webAuth = new auth0.WebAuth({
-    domain:       'dev-k2n.eu.auth0.com',
-    clientID:     client_id
+    domain:       auth.domain,
+    clientID:     auth.client_id
   });
 
   function get_user_info() {

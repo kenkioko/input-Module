@@ -84,7 +84,8 @@ php -S host:port
 Edit the /api/includes/.env file 
 
 **For Js Config**
-Edit the js file /api/inputModal.js and change the host var
+Edit the js file /api/variables.js 
+- Change the __host__ var
 ```javascript
   
   /**
@@ -98,4 +99,15 @@ Edit the js file /api/inputModal.js and change the host var
   }
   
 ```
-
+- Change the __auth__ variable
+```javascript
+  
+  /**
+   * Auth0 variables
+   */
+  let auth = {
+    domain: 'YOUR_DOMAIN',
+    client_id: 'YOUR_CLIENT_ID'
+  }
+  
+```
